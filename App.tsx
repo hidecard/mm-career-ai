@@ -146,40 +146,36 @@ const App: React.FC = () => {
         )}
       </main>
 
-      <footer className="bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 border-t-2 border-blue-500/20 w-full no-print mt-12 md:mt-16 lg:mt-20 text-white overflow-hidden">
-        {/* Premium decorative elements */}
-        <div className="absolute top-0 left-0 w-64 h-64 bg-blue-600/5 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2"></div>
-        <div className="absolute bottom-0 right-0 w-96 h-96 bg-indigo-600/5 rounded-full blur-3xl translate-x-1/3 translate-y-1/3"></div>
-
-        <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-12 py-14 md:py-18 lg:py-24 relative z-10">
+      <footer className="bg-white/90 backdrop-blur-xl border-t border-slate-200/50 w-full no-print mt-12 md:mt-16 lg:mt-20 text-slate-900 shadow-lg">
+        <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-12 py-12 md:py-16 lg:py-20">
           {/* Main footer grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-10 lg:gap-14 mb-12 md:mb-16">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-10 lg:gap-14 mb-10 md:mb-12">
             {/* Brand section */}
             <div className="lg:col-span-2 space-y-6">
               <div className="flex items-center gap-3.5">
-                <div className="w-12 h-12 md:w-14 md:h-14 bg-gradient-to-br from-blue-500 via-blue-600 to-blue-700 rounded-2xl md:rounded-3xl flex items-center justify-center text-white font-black text-xl md:text-2xl shadow-2xl shadow-blue-600/40 transform hover:scale-110 transition-transform duration-300">M</div>
+                <div className="w-12 h-12 md:w-14 md:h-14 bg-gradient-to-br from-blue-600 to-blue-700 rounded-2xl md:rounded-3xl flex items-center justify-center text-white font-black text-xl md:text-2xl shadow-lg shadow-blue-500/30 transform hover:scale-110 transition-transform duration-300">M</div>
                 <div>
-                  <span className="block text-2xl md:text-3xl font-black bg-gradient-to-r from-blue-300 via-blue-400 to-indigo-400 bg-clip-text text-transparent">MyanCareer AI</span>
-                  <span className="text-xs text-blue-300/70 font-bold tracking-wider">Your Career Compass</span>
+                  <span className="block text-2xl md:text-3xl font-black bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600 bg-clip-text text-transparent">MyanCareer AI</span>
+                  <span className="text-xs text-blue-600/70 font-bold tracking-wider">Your Career Compass</span>
                 </div>
               </div>
 
-              <p className="text-slate-200 text-sm md:text-base leading-relaxed font-medium max-w-sm">
+              <p className="text-slate-600 text-sm md:text-base leading-relaxed font-medium max-w-sm">
                 မြန်မာလူငယ်များအတွက် နည်းပညာနှင့် အသက်မွေးဝမ်းကျောင်းဆိုင်ရာ လမ်းပြမြေပုံများကို AI စနစ်သုံး၍ အခမဲ့ ဖန်တီးပေးနေသော Platform ဖြစ်ပါသည်။
               </p>
 
               {/* Social icons */}
               <div className="flex items-center gap-4 pt-4">
-                <span className="text-xs md:text-sm font-black text-slate-300 uppercase tracking-wider">Follow Us:</span>
+                <span className="text-xs md:text-sm font-black text-slate-700 uppercase tracking-wider">Follow Us:</span>
                 <div className="flex gap-3">
-                  <a href="#" className="group w-11 h-11 bg-gradient-to-br from-blue-600/20 to-blue-600/10 hover:from-blue-600 hover:to-blue-700 rounded-lg flex items-center justify-center transition-all duration-300 border border-blue-500/30 hover:border-blue-400 shadow-lg shadow-blue-600/10 hover:shadow-lg hover:shadow-blue-600/30">
-                    <span className="text-lg font-bold text-blue-300 group-hover:text-white">f</span>
+                  <a href="#" className="group w-11 h-11 bg-gradient-to-br from-blue-50 to-blue-100 hover:from-blue-100 hover:to-blue-200 rounded-lg flex items-center justify-center transition-all duration-300 border border-blue-200/50 hover:border-blue-300 shadow-md hover:shadow-lg">
+                    <span className="text-lg font-bold text-blue-600 group-hover:text-blue-700">f</span>
                   </a>
-                  <a href="#" className="group w-11 h-11 bg-gradient-to-br from-indigo-600/20 to-indigo-600/10 hover:from-indigo-600 hover:to-indigo-700 rounded-lg flex items-center justify-center transition-all duration-300 border border-indigo-500/30 hover:border-indigo-400 shadow-lg shadow-indigo-600/10 hover:shadow-lg hover:shadow-indigo-600/30">
-                    <span className="text-lg font-bold text-indigo-300 group-hover:text-white">D</span>
+                  <a href="#" className="group w-11 h-11 bg-gradient-to-br from-indigo-50 to-indigo-100 hover:from-indigo-100 hover:to-indigo-200 rounded-lg flex items-center justify-center transition-all duration-300 border border-indigo-200/50 hover:border-indigo-300 shadow-md hover:shadow-lg">
+                    <span className="text-lg font-bold text-indigo-600 group-hover:text-indigo-700">D</span>
                   </a>
-                  <a href="#" className="group w-11 h-11 bg-gradient-to-br from-purple-600/20 to-purple-600/10 hover:from-purple-600 hover:to-purple-700 rounded-lg flex items-center justify-center transition-all duration-300 border border-purple-500/30 hover:border-purple-400 shadow-lg shadow-purple-600/10 hover:shadow-lg hover:shadow-purple-600/30">
-                    <span className="text-lg font-bold text-purple-300 group-hover:text-white">@</span>
+                  <a href="#" className="group w-11 h-11 bg-gradient-to-br from-purple-50 to-purple-100 hover:from-purple-100 hover:to-purple-200 rounded-lg flex items-center justify-center transition-all duration-300 border border-purple-200/50 hover:border-purple-300 shadow-md hover:shadow-lg">
+                    <span className="text-lg font-bold text-purple-600 group-hover:text-purple-700">@</span>
                   </a>
                 </div>
               </div>
@@ -188,25 +184,25 @@ const App: React.FC = () => {
             {/* Quick Links section */}
             <div className="space-y-6">
               <div className="space-y-2">
-                <h5 className="font-black text-white/90 uppercase tracking-widest text-xs md:text-sm border-l-4 border-blue-400 pl-4 py-1">🔗 Quick Links</h5>
-                <div className="w-8 h-1 bg-gradient-to-r from-blue-400 to-transparent rounded-full ml-4"></div>
+                <h5 className="font-black text-slate-900 uppercase tracking-widest text-xs md:text-sm border-l-4 border-blue-500 pl-4 py-1">🔗 Quick Links</h5>
+                <div className="w-8 h-1 bg-gradient-to-r from-blue-500 to-transparent rounded-full ml-4"></div>
               </div>
               <ul className="space-y-3.5 text-sm md:text-base">
                 <li>
-                  <button onClick={() => handleNav('home')} className="group text-slate-200 hover:text-blue-300 transition-all duration-300 flex items-center gap-2.5 font-bold">
-                    <span className="text-blue-400 group-hover:translate-x-1 transition-transform duration-300">→</span>
+                  <button onClick={() => handleNav('home')} className="group text-slate-600 hover:text-blue-600 transition-all duration-300 flex items-center gap-2.5 font-bold">
+                    <span className="text-blue-500 group-hover:translate-x-1 transition-transform duration-300">→</span>
                     <span>ပင်မစာမျက်နှာ</span>
                   </button>
                 </li>
                 <li>
-                  <button onClick={() => handleNav('assessment')} className="group text-slate-200 hover:text-blue-300 transition-all duration-300 flex items-center gap-2.5 font-bold">
-                    <span className="text-blue-400 group-hover:translate-x-1 transition-transform duration-300">→</span>
+                  <button onClick={() => handleNav('assessment')} className="group text-slate-600 hover:text-blue-600 transition-all duration-300 flex items-center gap-2.5 font-bold">
+                    <span className="text-blue-500 group-hover:translate-x-1 transition-transform duration-300">→</span>
                     <span>လမ်းညွှန်ချက်ရယူရန်</span>
                   </button>
                 </li>
                 <li>
-                  <button onClick={() => handleNav('trends')} className="group text-slate-200 hover:text-blue-300 transition-all duration-300 flex items-center gap-2.5 font-bold">
-                    <span className="text-blue-400 group-hover:translate-x-1 transition-transform duration-300">→</span>
+                  <button onClick={() => handleNav('trends')} className="group text-slate-600 hover:text-blue-600 transition-all duration-300 flex items-center gap-2.5 font-bold">
+                    <span className="text-blue-500 group-hover:translate-x-1 transition-transform duration-300">→</span>
                     <span>အလုပ်အကိုင် ရေစီးကြောင်း</span>
                   </button>
                 </li>
@@ -216,25 +212,25 @@ const App: React.FC = () => {
             {/* Community section */}
             <div className="space-y-6">
               <div className="space-y-2">
-                <h5 className="font-black text-white/90 uppercase tracking-widest text-xs md:text-sm border-l-4 border-indigo-400 pl-4 py-1">👥 Community</h5>
-                <div className="w-8 h-1 bg-gradient-to-r from-indigo-400 to-transparent rounded-full ml-4"></div>
+                <h5 className="font-black text-slate-900 uppercase tracking-widest text-xs md:text-sm border-l-4 border-indigo-500 pl-4 py-1">👥 Community</h5>
+                <div className="w-8 h-1 bg-gradient-to-r from-indigo-500 to-transparent rounded-full ml-4"></div>
               </div>
               <ul className="space-y-3.5 text-sm md:text-base">
                 <li>
-                  <a href="#" className="group text-slate-200 hover:text-indigo-300 transition-all duration-300 flex items-center gap-2.5 font-bold">
-                    <span className="text-indigo-400 group-hover:translate-x-1 transition-transform duration-300">→</span>
+                  <a href="#" className="group text-slate-600 hover:text-indigo-600 transition-all duration-300 flex items-center gap-2.5 font-bold">
+                    <span className="text-indigo-500 group-hover:translate-x-1 transition-transform duration-300">→</span>
                     <span>Facebook Page</span>
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="group text-slate-200 hover:text-indigo-300 transition-all duration-300 flex items-center gap-2.5 font-bold">
-                    <span className="text-indigo-400 group-hover:translate-x-1 transition-transform duration-300">→</span>
+                  <a href="#" className="group text-slate-600 hover:text-indigo-600 transition-all duration-300 flex items-center gap-2.5 font-bold">
+                    <span className="text-indigo-500 group-hover:translate-x-1 transition-transform duration-300">→</span>
                     <span>Discord Server</span>
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="group text-slate-200 hover:text-indigo-300 transition-all duration-300 flex items-center gap-2.5 font-bold">
-                    <span className="text-indigo-400 group-hover:translate-x-1 transition-transform duration-300">→</span>
+                  <a href="#" className="group text-slate-600 hover:text-indigo-600 transition-all duration-300 flex items-center gap-2.5 font-bold">
+                    <span className="text-indigo-500 group-hover:translate-x-1 transition-transform duration-300">→</span>
                     <span>Newsletter</span>
                   </a>
                 </li>
@@ -243,27 +239,27 @@ const App: React.FC = () => {
           </div>
 
           {/* Divider */}
-          <div className="h-px bg-gradient-to-r from-slate-700/50 via-slate-600/50 to-slate-700/50 my-10 md:my-12"></div>
+          <div className="h-px bg-gradient-to-r from-slate-200 via-slate-300 to-slate-200 my-8 md:my-10"></div>
 
           {/* Bottom copyright section */}
           <div className="flex flex-col sm:flex-row justify-between items-center gap-6 sm:gap-4 text-center sm:text-left">
-            <p className="text-xs md:text-sm text-slate-300 font-black tracking-wider">
+            <p className="text-xs md:text-sm text-slate-600 font-black tracking-wider">
               <span className="block sm:inline">© ၂၀၂၅ MyanCareer AI</span>
               <span className="hidden sm:inline mx-2">•</span>
-              <span className="text-slate-400 font-medium">Empowering Myanmar Youth</span>
+              <span className="text-slate-500 font-medium">Empowering Myanmar Youth</span>
               <span className="ml-2">🚀</span>
             </p>
             <div className="flex gap-6 md:gap-8 text-xs md:text-sm">
-              <a href="#" className="text-slate-300 hover:text-blue-300 transition-colors duration-300 font-bold">မူဝါဒများ</a>
-              <span className="text-slate-600">•</span>
-              <a href="#" className="text-slate-300 hover:text-blue-300 transition-colors duration-300 font-bold">စည်းကမ်းချက်များ</a>
+              <a href="#" className="text-slate-600 hover:text-blue-600 transition-colors duration-300 font-bold">မူဝါဒများ</a>
+              <span className="text-slate-400">•</span>
+              <a href="#" className="text-slate-600 hover:text-blue-600 transition-colors duration-300 font-bold">စည်းကမ်းချက်များ</a>
             </div>
           </div>
 
           {/* Footer note */}
-          <div className="mt-8 md:mt-10 pt-8 md:pt-10 border-t border-slate-700/30">
-            <p className="text-center text-xs text-slate-400 font-medium leading-relaxed">
-              Made with <span className="text-red-400">❤️</span> for Myanmar youth who dare to dream big. Keep learning, keep growing! 💪
+          <div className="mt-6 md:mt-8 pt-6 md:pt-8 border-t border-slate-200/50">
+            <p className="text-center text-xs text-slate-500 font-medium leading-relaxed">
+              Made with <span className="text-red-500">❤️</span> for Myanmar youth who dare to dream big. Keep learning, keep growing! 💪
             </p>
           </div>
         </div>
