@@ -1,0 +1,206 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Premium Custom Global Styles */
+
+/* Smooth animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.7);
+  }
+  50% {
+    box-shadow: 0 0 0 10px rgba(59, 130, 246, 0);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes gradient-shift {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+@layer utilities {
+  .animate-fade-in {
+    animation: fadeIn 0.6s ease-out forwards;
+  }
+
+  .animate-slide-in-down {
+    animation: slideInDown 0.6s ease-out forwards;
+  }
+
+  .animate-slide-in-up {
+    animation: slideInUp 0.6s ease-out forwards;
+  }
+
+  .animate-pulse-glow {
+    animation: pulse-glow 2s infinite;
+  }
+
+  .animate-shimmer {
+    background: linear-gradient(90deg, #f8f9fa 25%, #e9ecef 50%, #f8f9fa 75%);
+    background-size: 1000px 100%;
+    animation: shimmer 2s infinite;
+  }
+
+  .animate-float {
+    animation: float 3s ease-in-out infinite;
+  }
+
+  .animate-gradient-shift {
+    background-size: 200% 200%;
+    animation: gradient-shift 3s ease infinite;
+  }
+
+  .glass-effect {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+
+  .premium-shadow {
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  }
+
+  .premium-gradient {
+    @apply bg-gradient-to-br from-blue-600 via-blue-500 to-indigo-600;
+  }
+}
+
+/* Smooth transitions for all elements */
+* {
+  @apply transition-all duration-300;
+}
+
+/* Remove animation delay on hover for better UX */
+.group:hover .animate-fade-in {
+  animation-delay: 0s !important;
+}
+
+/* PDF Typography and Layout Fixes */
+@media print {
+  * {
+    font-family: 'Inter', 'Pyidaungsu', sans-serif !important;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  
+  .print-container {
+    font-size: 12px;
+    line-height: 1.4;
+  }
+  
+  .print-container h1 {
+    font-size: 24px !important;
+  }
+  
+  .print-container h2 {
+    font-size: 20px !important;
+  }
+  
+  .print-container h3 {
+    font-size: 18px !important;
+  }
+  
+  .print-container h4 {
+    font-size: 16px !important;
+  }
+  
+  .print-container p {
+    font-size: 12px !important;
+  }
+  
+  .print-container .text-xs {
+    font-size: 10px !important;
+  }
+  
+  .print-container .text-sm {
+    font-size: 11px !important;
+  }
+  
+  .print-container .text-base {
+    font-size: 12px !important;
+  }
+  
+  .print-container .text-lg {
+    font-size: 14px !important;
+  }
+  
+  .print-container .text-xl {
+    font-size: 16px !important;
+  }
+  
+  .print-container .text-2xl {
+    font-size: 18px !important;
+  }
+  
+  .print-container .text-3xl {
+    font-size: 20px !important;
+  }
+  
+  .print-container .text-4xl {
+    font-size: 24px !important;
+  }
+  
+  .print-container .text-5xl {
+    font-size: 28px !important;
+  }
+  
+  .print-container .text-6xl {
+    font-size: 32px !important;
+  }
+}

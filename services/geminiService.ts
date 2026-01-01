@@ -1,0 +1,204 @@
+import { CareerGuide } from "../types";
+
+// Puter.js is loaded via script tag in index.html and provides free, unlimited Gemini API access
+// No API key required - uses the "User-Pays" model
+
+/**
+ * Helper function to parse JSON from AI response
+ * Putser.js returns text that may contain JSON within code blocks
+ */
+const parseAIResponse = (text: string): any => {
+  // Try to parse as-is first
+  try {
+    return JSON.parse(text);
+  } catch {
+    // Try to extract JSON from markdown code blocks
+    const jsonMatch = text.match(/```json\n([\s\S]*?)\n```/);
+    if (jsonMatch) {
+      try {
+        return JSON.parse(jsonMatch[1]);
+      } catch {
+        // Try to find any JSON object in the text
+        const anyJsonMatch = text.match(/\{[\s\S]*\}/);
+        if (anyJsonMatch) {
+          try {
+            return JSON.parse(anyJsonMatch[0]);
+          } catch {
+            // Last resort: try to fix common JSON issues
+            const fixedText = text
+              .replace(/```json/g, '')
+              .replace(/```/g, '')
+              .trim();
+            try {
+              return JSON.parse(fixedText);
+            } catch {
+              throw new Error("AI ၏ တုံ့ပြန်မှုကို ဖတ်၍မရပါ။ ခဏနေမှ ထပ်ကြိုးစားကြည့်ပေးပါ။");
+            }
+          }
+        }
+      }
+    }
+    throw new Error("AI ၏ တုံ့ပြန်မှုကို ဖတ်၍မရပါ။ ခဏနေမှ ထပ်ကြိုးစားကြည့်ပေးပါ။");
+  }
+};
+
+/**
+ * Helper function to stream AI response and collect text
+ */
+const streamAIResponse = async (chatPromise: Promise<any>): Promise<string> => {
+  const response = await chatPromise;
+  let fullText = "";
+  
+  if (response[Symbol.asyncIterator]) {
+    for await (const part of response) {
+      if (part?.text) {
+        fullText += part.text;
+      }
+    }
+  } else if (typeof response === 'string') {
+    fullText = response;
+  } else if (response.text) {
+    fullText = response.text;
+  } else {
+    // Try to convert to string
+    fullText = String(response);
+  }
+  
+  return fullText;
+};
+
+export const generateCareerGuide = async (currentSkills: string, interests: string): Promise<CareerGuide> => {
+  const prompt = `လက်ရှိ ကျွမ်းကျင်မှု: "${currentSkills}" နှင့် စိတ်ဝင်စားမှု: "${interests}" တို့အပေါ် အခြေခံ၍ အသေးစိတ် Career Roadmap တစ်ခုကို မြန်မာဘာသာဖြင့် ရေးသားပေးပါ။ ထို့အပြင် ဤအရည်အချင်းများနှင့် ကိုက်ညီနိုင်သော အခြားအလုပ်အကိုင် ၂ ခုမှ ၃ ခုကိုလည်း အကြံပြုပေးပါ။
+
+သင်သည် မြန်မာနိုင်ငံရှိ ထိပ်တန်း အသက်မွေးဝမ်းကျောင်း လမ်းညွှန်သူ (Career Strategist) တစ်ဦး ဖြစ်သည်။ အသုံးပြုသူ၏ အချက်အလက်များအပေါ် မူတည်၍ အောင်မြင်မှုရရှိစေမည့် အဆင့်ဆင့် လမ်းပြမြေပုံကို ပေးပါ။ ရလာဒ်အားလုံးကို မြန်မာဘာသာဖြင့်သာ ပေးရမည်။ JSON format ဖြင့်သာ ပြန်ပေးပါ။
+
+Respond ONLY with valid JSON in the following format:
+{
+  "jobTitle": "အလုပ်ခေါင်းစဉ်",
+  "matchScore": 85,
+  "summary": "အလုပ်အကြောင်း အနှစ်ချုပ်",
+  "requiredSkills": ["ကျွမ်းကျင်မှု ၁", "ကျွမ်းကျင်မှု ၂"],
+  "salaryRange": "၃၀၀၀၀၀ - ၅၀၀၀၀၀ ကျပ်/လ",
+  "marketDemand": "ဈေးကွက်လိုအပ်ချက်",
+  "requiredExperience": "လိုအပ်သော အတွေ့အကြုံ",
+  "softSkills": ["အပြောအဆို စသည့် � мяဆိုင်ရာ ကျွမ်းကျင်မှုများ"],
+  "interviewTips": ["အင်တာဗျူး အကြံပြုချက်များ"],
+  "potentialCompanies": ["လုပ်ငန်းများ စာရင်း"],
+  "recommendedCertifications": ["လက်မှတ်များ စာရင်း"],
+  "mentorshipAdvice": "သင်ကောင်းပေးသော အကြံပြုချက်",
+  "longTermGoal": "ရေရှည် ပန်းတိုင်",
+  "roadmap": [
+    {
+      "title": "အဆင့် ၁ - အခြေခံ မြေပြင်ပြင်",
+      "description": "အဆင့်အသေးစိတ် ဖော်ပြချက်",
+      "skillsToAcquire": ["ကျွမ်းကျင်မှုများ"],
+      "toolsToMaster": ["ကိရိယာများ"],
+      "estimatedTime": "၃ လ",
+      "difficulty": "လွယ်ကူသော",
+      "prerequisites": ["လိုအပ်ချက်များ"],
+      "projectIdea": "ပရောဂျက် အကြံပြုချက်",
+      "successMetrics": "အောင်မြင်မှု အတိုင်းအတာ",
+      "resources": [{"title": "အရင်းအမြစ် ၁", "url": "https://example.com"}]
+    }
+  ],
+  "relatedJobs": [
+    {
+      "title": "ဆက်စပ် အလုပ်ခေါင်းစဉ် ၁",
+      "summary": "အလုပ်အကြောင်း အနှစ်ချုပ်"
+    }
+  ]
+}`;
+
+  // Use Puter.js for free, unlimited Gemini API access
+  const responsePromise = puter.ai.chat(prompt, {
+    model: 'gemini-3-flash-preview',
+    stream: true
+  });
+
+  const text = await streamAIResponse(responsePromise);
+  
+  if (!text) {
+    throw new Error("AI ဆီမှ အချက်အလက်များ မရရှိနိုင်ပါ။");
+  }
+
+  try {
+    const data = parseAIResponse(text);
+    return {
+      ...data,
+      id: Math.random().toString(36).substring(2, 11),
+      generatedAt: new Date().toISOString()
+    } as CareerGuide;
+  } catch (error) {
+    throw new Error("AI ၏ တုံ့ပြန်မှုကို ဖတ်၍မရပါ။ ခဏနေမှ ထပ်ကြိုးစားကြည့်ပေးပါ။");
+  }
+};
+
+export const chatWithMentor = async (history: {role: 'user' | 'model', parts: {text: string}[]}[], message: string) => {
+  const systemPrompt = `သင်သည် မြန်မာနိုင်ငံမှ နွေးထွေးဖော်ရွေသော Career Mentor တစ်ဦးဖြစ်သည်။ အသုံးပြုသူ၏ မေးခွန်းများကို မြန်မာဘာသာဖြင့် တိုတိုနှင့် လိုရင်းရောက်အောင် ဖြေကြားပေးပါ။`;
+
+  // Build conversation history for Puter.js
+  let conversationHistory = "";
+  for (const msg of history) {
+    const role = msg.role === 'user' ? "အသုံးပြုသူ" : "မိုတာ";
+    conversationHistory += `${role}: ${msg.parts[0].text}\n`;
+  }
+  
+  const fullPrompt = `${systemPrompt}\n\nယခင် စကားပြောဆိုမှု:\n${conversationHistory}\n\nအသုံးပြုသူ: ${message}`;
+
+  // Use Puter.js for free, unlimited Gemini API access with streaming
+  const responsePromise = puter.ai.chat(fullPrompt, {
+    model: 'gemini-3-flash-preview',
+    stream: true
+  });
+
+  const response = await responsePromise;
+  let fullText = "";
+  
+  for await (const part of response) {
+    if (part?.text) {
+      fullText += part.text;
+    }
+  }
+  
+  return fullText;
+};
+
+export const searchJobsInMyanmar = async (jobTitle: string) => {
+  const prompt = `မြန်မာနိုင်ငံတွင် "${jobTitle}" နှင့် ပတ်သက်သော အလုပ်အကိုင် အခွင့်အလမ်း ၃ ခုမှ ၅ ခုအထိ ရှာဖွေပေးပါ။ အရင်းအမြစ် (Source) များကိုလည်း ဖော်ပြပေးပါ။ မြန်မာဘာသာဖြင့်သာ ရေးသားပါ။
+
+Respond with JSON in the following format:
+{
+  "jobs": [
+    {
+      "title": "အလုပ်ခေါင်းစဉ်",
+      "company": "ကုမ္ပဏီအမည်",
+      "location": "တည်နေရာ",
+      "salary": "လစာအပြင်",
+      "description": "အလုပ်အကြောင်း အသေးစိတ်",
+      "source": "အရင်းအမြစ်"
+    }
+  ]
+}`;
+
+  // Use Puter.js for free, unlimited Gemini API access
+  const responsePromise = puter.ai.chat(prompt, {
+    model: 'gemini-3-flash-preview',
+    stream: true
+  });
+
+  const text = await streamAIResponse(responsePromise);
+  
+  try {
+    const data = parseAIResponse(text);
+    return {
+      text: text,
+      jobs: data.jobs || []
+    };
+  } catch {
+    return {
+      text: text,
+      jobs: []
+    };
+  }
+};
+
