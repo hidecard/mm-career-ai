@@ -88,15 +88,15 @@ const App: React.FC = () => {
               <TrendChart />
             </section>
             
-            <section className="py-12 md:py-16 lg:py-20 bg-white/90 backdrop-blur-xl rounded-2xl md:rounded-3xl px-6 md:px-8 lg:px-12 text-slate-900 relative overflow-hidden shadow-2xl border border-slate-200/50">
+            <section className="pt-12 md:pt-16 lg:pt-20 pb-8 md:pb-10 lg:pb-12 bg-white/90 backdrop-blur-xl rounded-2xl md:rounded-3xl px-6 md:px-8 lg:px-12 text-slate-900 relative overflow-hidden shadow-2xl border border-slate-200/50">
               {/* Premium gradient background elements */}
               <div className="absolute top-0 right-0 w-40 md:w-56 lg:w-80 h-40 md:h-56 lg:h-80 bg-gradient-to-bl from-blue-100/60 to-transparent blur-[100px] md:blur-[120px] rounded-full"></div>
               <div className="absolute bottom-0 left-0 w-48 md:w-64 lg:w-96 h-48 md:h-64 lg:h-96 bg-gradient-to-tr from-indigo-100/50 to-transparent blur-[80px] md:blur-[100px] rounded-full"></div>
               <div className="absolute top-1/2 -translate-y-1/2 right-1/3 w-32 md:w-48 h-32 md:h-48 bg-purple-100/40 blur-[60px] rounded-full"></div>
 
-              <div className="max-w-5xl mx-auto text-center mb-10 md:mb-14 lg:mb-16 relative z-10 animate-fade-in">
-                <h2 className="text-3xl md:text-4xl lg:text-5xl font-black mb-4 bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 bg-clip-text text-transparent">အလုပ်အကိုင် အခွင့်အလမ်းများ</h2>
-                <p className="text-slate-600 text-base md:text-lg max-w-2xl mx-auto font-medium leading-relaxed">ကျွန်ုပ်တို့၏ AI သည် သင့်ကို အောက်ပါဝန်ဆောင်မှုများဖြင့် ကူညီပေးပါမည်</p>
+              <div className="max-w-5xl mx-auto text-center mb-12 md:mb-16 lg:mb-20 relative z-10 animate-fade-in">
+                <h2 className="text-3xl md:text-4xl lg:text-5xl font-black mb-6 bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 bg-clip-text text-transparent">အလုပ်အကိုင် အခွင့်အလမ်းများ</h2>
+                <p className="text-slate-600 text-lg md:text-xl max-w-2xl mx-auto font-medium leading-relaxed">ကျွန်ုပ်တို့၏ AI သည် သင့်ကို အောက်ပါဝန်ဆောင်မှုများဖြင့် ကူညီပေးပါမည်</p>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-6 lg:gap-8 relative z-10 mb-10 md:mb-14">
@@ -116,7 +116,7 @@ const App: React.FC = () => {
                 ))}
               </div>
 
-              <div className="flex pb-8 md:pb-12 lg:pb-16 justify-center relative z-10">
+              <div className="flex justify-center relative z-10">
                 <button
                   onClick={handleStartAssessment}
                   className="group px-8 md:px-10 lg:px-12 py-4 md:py-5 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-xl md:rounded-2xl font-black text-base md:text-lg shadow-2xl shadow-blue-500/30 transition-all duration-300 transform hover:scale-105 active:scale-95 hover:shadow-3xl"

@@ -35,15 +35,7 @@ const Hero: React.FC<HeroProps> = ({ onStart }) => {
             >
               အခုပဲ စစ်ဆေးကြည့်မယ်
             </button>
-            <a
-              href="#trends"
-              className="text-base font-bold text-slate-700 hover:text-blue-600 transition-colors py-3 md:py-4 px-6 md:px-8 flex items-center gap-2 rounded-xl hover:bg-white/60"
-            >
-              ပိုမိုလေ့လာရန်
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-              </svg>
-            </a>
+          
           </div>
         </div>
 

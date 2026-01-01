@@ -144,39 +144,41 @@ const GuideResult: React.FC<GuideResultProps> = ({ guide, onReset }) => {
   };
 
   return (
-    <div className="w-full space-y-8 pb-20 animate-fade-in px-3 sm:px-4 md:px-0 relative">
+    <div className="w-full space-y-8 md:space-y-10 pb-16 md:pb-20 animate-fade-in px-4 sm:px-6 lg:px-8 relative">
       {/* Action Bar with Layout Toggle */}
-      <div className="flex flex-col gap-4 p-4 bg-white/90 backdrop-blur-xl rounded-2xl border border-slate-200 sticky top-16 md:top-20 z-40 shadow-sm transition-all no-print">
-        <div className="flex flex-row justify-between items-center gap-2">
-          <button onClick={onReset} className="text-slate-600 flex items-center gap-1.5 hover:text-blue-600 transition-colors font-black px-3 py-2 text-sm">
+      <div className="flex flex-col gap-4 p-4 md:p-6 bg-white/90 backdrop-blur-xl rounded-2xl border border-slate-200 sticky top-16 md:top-20 z-40 shadow-sm transition-all no-print">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+          <button onClick={onReset} className="text-slate-600 flex items-center gap-2 hover:text-blue-600 transition-colors font-black px-4 py-2.5 text-sm rounded-lg hover:bg-slate-50">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-4 h-4 md:w-5 md:h-5">
               <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
             </svg>
             <span className="hidden sm:inline">အသစ်ပြန်စစ်မည်</span>
             <span className="sm:hidden">Reset</span>
           </button>
-          
-          <div className="flex gap-2">
-            <button 
-              onClick={() => setIsChatOpen(true)} 
-              className="flex items-center gap-2 px-4 py-2 bg-indigo-50 text-indigo-600 rounded-xl hover:bg-indigo-100 font-bold transition-all border border-indigo-100 text-sm"
+
+          <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
+            <button
+              onClick={() => setIsChatOpen(true)}
+              className="flex items-center justify-center gap-2 px-4 py-2.5 bg-indigo-50 text-indigo-600 rounded-xl hover:bg-indigo-100 font-bold transition-all border border-indigo-100 text-sm"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"></path></svg>
-              <span>Mentor AI</span>
+              <span className="hidden sm:inline">Mentor AI</span>
+              <span className="sm:hidden">AI Chat</span>
             </button>
-            <button 
-              onClick={triggerPDFExport} 
-              disabled={isExporting} 
-              className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-xl hover:bg-blue-700 shadow-md font-black text-sm transition-all active:scale-95 disabled:opacity-70"
+            <button
+              onClick={triggerPDFExport}
+              disabled={isExporting}
+              className="flex items-center justify-center gap-2 px-4 py-2.5 bg-blue-600 text-white rounded-xl hover:bg-blue-700 shadow-md font-black text-sm transition-all active:scale-95 disabled:opacity-70"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5"></path></svg>
-              <span>{isExporting ? 'ထုတ်ယူနေသည်...' : 'PDF ဒေါင်းလုဒ်'}</span>
+              <span className="hidden sm:inline">{isExporting ? 'ထုတ်ယူနေသည်...' : 'PDF ဒေါင်းလုဒ်'}</span>
+              <span className="sm:hidden">{isExporting ? 'Exporting...' : 'PDF'}</span>
             </button>
           </div>
         </div>
 
-        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 pt-3 border-t border-slate-100">
-          <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">PDF Layout ရွေးချယ်ရန်:</span>
+        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 pt-4 border-t border-slate-100">
+          <span className="text-[11px] font-black text-slate-400 uppercase tracking-widest shrink-0">PDF Layout ရွေးချယ်ရန်:</span>
           <div className="flex flex-wrap gap-2">
             {[
               { id: 'detailed', label: 'အသေးစိတ် (Detailed)' },
@@ -184,17 +186,17 @@ const GuideResult: React.FC<GuideResultProps> = ({ guide, onReset }) => {
               { id: 'minimalist', label: 'အခြေခံ (Minimalist)' }
             ].map((layout) => (
               <label key={layout.id} className="flex items-center gap-2 cursor-pointer group">
-                <input 
-                  type="radio" 
-                  name="pdfLayout" 
-                  value={layout.id} 
+                <input
+                  type="radio"
+                  name="pdfLayout"
+                  value={layout.id}
                   checked={pdfLayout === layout.id}
                   onChange={() => setPdfLayout(layout.id as any)}
                   className="hidden"
                 />
-                <div className={`px-3 py-1.5 rounded-lg border text-[11px] font-bold transition-all ${
-                  pdfLayout === layout.id 
-                  ? 'bg-blue-600 border-blue-600 text-white shadow-sm' 
+                <div className={`px-3 py-2 rounded-lg border text-[11px] font-bold transition-all ${
+                  pdfLayout === layout.id
+                  ? 'bg-blue-600 border-blue-600 text-white shadow-sm'
                   : 'bg-white border-slate-200 text-slate-600 hover:border-blue-300'
                 }`}>
                   {layout.label}
@@ -225,44 +227,76 @@ const GuideResult: React.FC<GuideResultProps> = ({ guide, onReset }) => {
         </div>
 
         {/* Header Section */}
-        <div className="bg-blue-700 p-8 md:p-14 text-white relative">
-          <div className="flex flex-col md:flex-row justify-between items-start gap-10 relative z-10">
-            <div className="flex-1 space-y-6">
-              <div className="flex items-center gap-3 flex-wrap">
-                <span className="bg-white/20 text-white text-[11px] px-3 py-1.5 rounded-full font-bold uppercase tracking-wider">AI Career Strategy</span>
-                <div className="flex items-center gap-2 bg-emerald-500/20 px-4 py-1.5 rounded-full border border-emerald-500/30">
-                  <div className="w-2.5 h-2.5 rounded-full bg-emerald-400"></div>
-                  <span className="text-[11px] font-bold text-emerald-50">Match Score: {guide.matchScore}%</span>
+        <div className="bg-gradient-to-br from-blue-700 via-blue-800 to-indigo-900 p-6 md:p-10 lg:p-14 text-white relative overflow-hidden">
+          {/* Background decorative elements */}
+          <div className="absolute top-0 right-0 w-80 h-80 md:w-96 md:h-96 bg-blue-500/10 rounded-full blur-3xl -translate-y-40 md:-translate-y-48 translate-x-40 md:translate-x-48"></div>
+          <div className="absolute bottom-0 left-0 w-72 h-72 md:w-80 md:h-80 bg-indigo-500/10 rounded-full blur-3xl translate-y-36 md:translate-y-40 -translate-x-36 md:-translate-x-40"></div>
+
+          <div className="flex flex-col lg:flex-row justify-between items-start gap-8 md:gap-10 relative z-10">
+            <div className="flex-1 space-y-6 md:space-y-8">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 md:gap-4 flex-wrap">
+                <div className="flex items-center gap-2 bg-white/15 backdrop-blur-sm text-white text-[11px] px-4 py-2 rounded-full font-bold uppercase tracking-wider border border-white/20 shadow-lg">
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"></path>
+                  </svg>
+                  AI Career Strategy
+                </div>
+                <div className="flex items-center gap-3 bg-gradient-to-r from-emerald-500/20 to-green-500/20 px-4 md:px-5 py-2 md:py-2.5 rounded-full border border-emerald-400/30 backdrop-blur-sm shadow-lg">
+                  <div className="w-3 h-3 rounded-full bg-emerald-400 shadow-sm animate-pulse"></div>
+                  <span className="text-[12px] font-bold text-emerald-50">Match Score: {guide.matchScore}%</span>
+                  <svg className="w-4 h-4 text-emerald-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"></path>
+                  </svg>
                 </div>
               </div>
-              <h2 className="text-4xl md:text-6xl font-black tracking-tight leading-tight print:text-5xl">{guide.jobTitle}</h2>
-              <p className="text-blue-100 text-base md:text-xl max-w-3xl leading-relaxed font-medium print:text-lg">{guide.summary}</p>
-              
+              <h2 className="text-xl md:text-2xl lg:text-3xl font-black tracking-tight leading-tight print:text-2xl">{guide.jobTitle}</h2>
+              <p className="text-blue-100 text-sm md:text-base max-w-3xl leading-relaxed font-medium print:text-sm">{guide.summary}</p>
+
               {/* REQUIRED SKILLS DISPLAY - PROMINENT */}
-              <div className="pt-2">
-                <p className="text-[10px] font-black uppercase tracking-[0.2em] text-blue-200 mb-3">Core Required Skills</p>
-                <div className="flex flex-wrap gap-2">
+              <div className="pt-4">
+                <div className="flex items-center gap-2 mb-4">
+                  <svg className="w-4 h-4 text-blue-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"></path>
+                  </svg>
+                  <p className="text-[11px] font-black uppercase tracking-[0.2em] text-blue-200">Core Required Skills</p>
+                </div>
+                <div className="flex flex-wrap gap-2 md:gap-3">
                   {(guide.requiredSkills || []).map((skill, i) => (
-                    <span key={i} className="px-3 py-1.5 bg-white/10 text-white rounded-xl border border-white/20 text-[11px] font-bold backdrop-blur-sm">
+                    <span key={i} className="px-3 md:px-4 py-2 bg-white/15 text-white rounded-xl border border-white/25 text-[11px] font-bold backdrop-blur-sm shadow-sm hover:bg-white/20 transition-all">
                       {skill}
                     </span>
                   ))}
                 </div>
               </div>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-4 shrink-0 w-full md:w-auto print:grid-cols-1 print:w-48">
-              <div className="bg-white/10 p-5 rounded-2xl border border-white/20 print:p-4">
-                <p className="text-[11px] text-blue-200 uppercase font-black mb-1.5 tracking-widest">လစာ (ခန့်မှန်း)</p>
-                <p className="font-black text-lg md:text-2xl whitespace-nowrap">{guide.salaryRange}</p>
+            <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-1 gap-4 md:gap-6 shrink-0 w-full lg:w-auto print:grid-cols-1 print:w-48">
+              <div className="bg-white/15 backdrop-blur-sm p-5 rounded-2xl border border-white/25 shadow-lg hover:bg-white/20 transition-all print:p-4">
+                <div className="flex items-center gap-2 mb-2">
+                  <svg className="w-4 h-4 text-blue-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"></path>
+                  </svg>
+                  <p className="text-[10px] text-blue-200 uppercase font-black tracking-widest">လစာ (ခန့်မှန်း)</p>
+                </div>
+                <p className="font-black text-base md:text-lg whitespace-nowrap text-white leading-tight">{guide.salaryRange}</p>
               </div>
-              <div className="bg-white/10 p-5 rounded-2xl border border-white/20 print:p-4">
-                <p className="text-[11px] text-blue-200 uppercase font-black mb-1.5 tracking-widest">ဝယ်လိုအား</p>
-                <p className="font-black text-lg md:text-2xl">{guide.marketDemand}</p>
+              <div className="bg-white/15 backdrop-blur-sm p-5 rounded-2xl border border-white/25 shadow-lg hover:bg-white/20 transition-all print:p-4">
+                <div className="flex items-center gap-2 mb-2">
+                  <svg className="w-4 h-4 text-blue-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"></path>
+                  </svg>
+                  <p className="text-[10px] text-blue-200 uppercase font-black tracking-widest">ဝယ်လိုအား</p>
+                </div>
+                <p className="font-black text-sm md:text-base text-white leading-tight">{guide.marketDemand}</p>
               </div>
               {guide.requiredExperience && (
-                <div className="bg-white/10 p-5 rounded-2xl border border-white/20 print:p-4">
-                  <p className="text-[11px] text-blue-200 uppercase font-black mb-1.5 tracking-widest">လုပ်သက်</p>
-                  <p className="font-black text-lg md:text-2xl">{guide.requiredExperience}</p>
+                <div className="bg-white/15 backdrop-blur-sm p-5 rounded-2xl border border-white/25 shadow-lg hover:bg-white/20 transition-all print:p-4">
+                  <div className="flex items-center gap-2 mb-2">
+                    <svg className="w-4 h-4 text-blue-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"></path>
+                    </svg>
+                    <p className="text-[10px] text-blue-200 uppercase font-black tracking-widest">လုပ်သက်</p>
+                  </div>
+                  <p className="font-black text-sm md:text-base text-white leading-tight">{guide.requiredExperience}</p>
                 </div>
               )}
             </div>
@@ -301,29 +335,29 @@ const GuideResult: React.FC<GuideResultProps> = ({ guide, onReset }) => {
             </button>
           </div>
 
-          <div className="space-y-8 md:space-y-12">
+          <div className="space-y-10 md:space-y-14">
             {guide.roadmap.map((step, index) => (
-              <div key={index} className="roadmap-step bg-white border border-slate-200 rounded-[2.5rem] shadow-sm overflow-hidden p-8 md:p-12 transition-all hover:border-blue-200 print:shadow-none print:p-8 print:border-slate-200">
-                <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8 print:flex-row">
-                  <div className="flex items-center gap-5">
-                    <div className="w-12 h-12 md:w-16 md:h-16 rounded-[1.2rem] bg-blue-600 text-white flex items-center justify-center font-black text-xl md:text-3xl shrink-0 shadow-lg shadow-blue-500/20">{index+1}</div>
-                    <div>
-                      <h4 className="text-xl md:text-3xl font-black text-slate-900 print:text-2xl">{step.title}</h4>
-                      <div className="flex items-center gap-3 mt-1.5">
-                        <span className={`text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-wider ${step.difficulty === 'Easy' ? 'bg-emerald-50 text-emerald-600 border border-emerald-100' : step.difficulty === 'Medium' ? 'bg-amber-50 text-amber-600 border border-amber-100' : 'bg-rose-50 text-rose-600 border border-rose-100'}`}>{step.difficulty}</span>
+              <div key={index} className="roadmap-step bg-white border border-slate-200 rounded-2xl md:rounded-[2.5rem] shadow-sm overflow-hidden p-6 md:p-8 lg:p-12 transition-all hover:border-blue-200 print:shadow-none print:p-8 print:border-slate-200">
+                <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 md:gap-6 mb-6 md:mb-8 print:flex-row">
+                  <div className="flex items-center gap-4 md:gap-5">
+                    <div className="w-10 h-10 md:w-12 lg:w-16 md:h-12 lg:h-16 rounded-xl md:rounded-[1.2rem] bg-blue-600 text-white flex items-center justify-center font-black text-lg md:text-xl lg:text-3xl shrink-0 shadow-lg shadow-blue-500/20">{index+1}</div>
+                    <div className="min-w-0 flex-1">
+                      <h4 className="text-lg md:text-xl lg:text-3xl font-black text-slate-900 print:text-2xl leading-tight">{step.title}</h4>
+                      <div className="flex flex-wrap items-center gap-2 md:gap-3 mt-2 md:mt-1.5">
+                        <span className={`text-[10px] font-black px-2 md:px-3 py-1 rounded-full uppercase tracking-wider ${step.difficulty === 'Easy' ? 'bg-emerald-50 text-emerald-600 border border-emerald-100' : step.difficulty === 'Medium' ? 'bg-amber-50 text-amber-600 border border-amber-100' : 'bg-rose-50 text-rose-600 border border-rose-100'}`}>{step.difficulty}</span>
                         <span className="text-[11px] font-bold text-slate-500 bg-slate-100 px-2 py-1 rounded-md">{step.estimatedTime}</span>
                       </div>
                     </div>
                   </div>
-                  <button onClick={() => handleCopyStep(step, index)} className="no-print text-slate-400 hover:text-blue-600 transition-colors flex items-center gap-2 text-[11px] font-black">
+                  <button onClick={() => handleCopyStep(step, index)} className="no-print text-slate-400 hover:text-blue-600 transition-colors flex items-center gap-2 text-[11px] font-black shrink-0">
                     {copiedIndex === index ? 'Copied!' : 'Copy Step'}
                   </button>
                 </div>
-                
-                <p className="text-slate-700 text-base md:text-lg leading-relaxed mb-8 font-medium print:text-base print:mb-6">{step.description}</p>
-                
-                <div className={`grid md:grid-cols-2 gap-8 pt-8 border-t border-slate-100 print:grid-cols-2 print:gap-10 ${(pdfLayout === 'compact' || pdfLayout === 'minimalist') ? 'print:hidden' : ''}`}>
-                  <div className="space-y-8 sub-grid-item">
+
+                <p className="text-slate-700 text-sm md:text-base leading-relaxed mb-6 md:mb-8 font-medium print:text-sm print:mb-6">{step.description}</p>
+
+                <div className={`grid lg:grid-cols-2 gap-6 md:gap-8 pt-6 md:pt-8 border-t border-slate-100 print:grid-cols-2 print:gap-10 ${(pdfLayout === 'compact' || pdfLayout === 'minimalist') ? 'print:hidden' : ''}`}>
+                  <div className="space-y-10 sub-grid-item">
                     <div className="space-y-4">
                        <h5 className="text-[11px] font-black text-slate-400 uppercase tracking-widest">စွမ်းရည်နှင့် ကိရိယာများ</h5>
                        <div className="flex flex-wrap gap-2">
@@ -341,13 +375,13 @@ const GuideResult: React.FC<GuideResultProps> = ({ guide, onReset }) => {
                     )}
                   </div>
                   
-                  <div className="space-y-8 sub-grid-item">
+                  <div className="space-y-10 sub-grid-item">
                     <div className="space-y-4">
                       <h5 className="text-[11px] font-black text-slate-400 uppercase tracking-widest">လေ့လာရန် အရင်းအမြစ်များ</h5>
                       <div className="space-y-3">
                         {step.resources.map((res, idx) => (
                           <a key={idx} href={ensureAbsoluteUrl(res.url)} target="_blank" rel="noopener noreferrer" className="flex items-center justify-between p-4 bg-white border border-slate-200 rounded-2xl text-[11px] font-bold text-slate-800 hover:bg-slate-50 hover:border-blue-300 transition-all print:p-3">
-                            <span className="truncate pr-4">{res.title}</span> 
+                            <span className="truncate pr-4">{res.title}</span>
                             <svg className="w-4 h-4 text-blue-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"></path></svg>
                           </a>
                         ))}
@@ -391,7 +425,7 @@ const GuideResult: React.FC<GuideResultProps> = ({ guide, onReset }) => {
 
           {/* JOB SEARCH RESULTS SECTION */}
           {jobSearchResults.length > 0 && (
-            <div className={`space-y-8 pt-10 border-t border-slate-100 ${(pdfLayout === 'minimalist') ? 'print:hidden' : ''}`}>
+            <div className={`space-y-10 pt-12 border-t border-slate-100 ${(pdfLayout === 'minimalist') ? 'print:hidden' : ''}`}>
               <div className="space-y-2">
                 <h3 className="text-2xl md:text-3xl font-black text-slate-900 tracking-tight">ရှာဖွေထားသော အလုပ်အကိုင်များ (Found Jobs)</h3>
                 <p className="text-slate-500 font-bold text-sm">မြန်မာနိုင်ငံတွင် သင့်အလုပ်နှင့် ဆက်စပ်သော အခွင့်အလမ်းများ</p>

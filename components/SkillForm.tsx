@@ -220,30 +220,30 @@ const SkillForm: React.FC<SkillFormProps> = ({ onSubmit, isLoading }) => {
 
   return (
     <div className="w-full p-6 md:p-8 lg:p-10 bg-gradient-to-br from-white via-blue-50/30 to-white rounded-2xl md:rounded-3xl shadow-xl border border-white/60 backdrop-blur-sm animate-fade-in mb-8 md:mb-12 lg:mb-16 max-w-5xl mx-auto">
-      <div className="mb-8 md:mb-10 text-center md:text-left">
-        <h2 className="text-2xl md:text-3xl lg:text-4xl font-black text-slate-900 mb-2">စတင်ဆန်းစစ်ကြည့်ရအောင်</h2>
-        <p className="text-sm md:text-base text-slate-600 max-w-2xl font-medium">သင့်အကြောင်းကို AI က သိရှိနိုင်ဖို့ အောက်ပါအချက်အလက်တွေကို ဖြည့်စွက်ပေးပါ။</p>
+      <div className="mb-10 md:mb-12 text-center md:text-left">
+        <h2 className="text-2xl md:text-3xl lg:text-4xl font-black text-slate-900 mb-4">စတင်ဆန်းစစ်ကြည့်ရအောင်</h2>
+        <p className="text-base md:text-lg text-slate-600 max-w-2xl font-medium">သင့်အကြောင်းကို AI က သိရှိနိုင်ဖို့ အောက်ပါအချက်အလက်တွေကို ဖြည့်စွက်ပေးပါ။</p>
       </div>
       
       <form onSubmit={handleSubmit} className="space-y-8 md:space-y-10">
         <div className="space-y-4">
-          <label className={`block text-sm md:text-base font-black transition-colors ${errors.skills ? 'text-rose-600' : 'text-slate-900'}`}>
+          <label className={`block text-base md:text-lg font-black transition-colors ${errors.skills ? 'text-rose-600' : 'text-slate-900'}`}>
             💼 လက်ရှိ တတ်မြောက်ထားသည့် စွမ်းရည်များ (Skills)
           </label>
           <div className="flex flex-wrap gap-2 mb-3">
             {suggestedSkills.map(s => (
-              <button
-                key={s}
-                type="button"
-                onClick={() => addTag('skills', s)}
-                className="text-xs md:text-sm font-bold px-3 md:px-4 py-2 md:py-2.5 bg-white hover:bg-blue-50 border border-slate-300 hover:border-blue-400 rounded-xl transition-all duration-200 shadow-sm hover:shadow-md"
-              >
-                +{s}
-              </button>
+            <button
+              key={s}
+              type="button"
+              onClick={() => addTag('skills', s)}
+              className="text-sm md:text-base font-bold px-4 md:px-5 py-2.5 md:py-3 bg-white hover:bg-blue-50 border border-slate-300 hover:border-blue-400 rounded-xl transition-all duration-200 shadow-sm hover:shadow-md"
+            >
+              +{s}
+            </button>
             ))}
           </div>
           <textarea
-            className={`w-full p-4 md:p-5 border-2 rounded-2xl focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition-all min-h-[120px] md:min-h-[140px] text-sm md:text-base resize-none leading-relaxed font-medium shadow-sm focus:shadow-md ${errors.skills ? 'border-rose-400 bg-rose-50/50' : 'border-slate-300 bg-white'}`}
+            className={`w-full p-5 md:p-6 border-2 rounded-2xl focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition-all min-h-[140px] md:min-h-[160px] text-base md:text-lg resize-none leading-relaxed font-medium shadow-sm focus:shadow-md ${errors.skills ? 'border-rose-400 bg-rose-50/50' : 'border-slate-300 bg-white'}`}
             placeholder="ဥပမာ - HTML, CSS, Photoshop, Python..."
             value={skills}
             onChange={(e) => setSkills(e.target.value)}
@@ -255,14 +255,14 @@ const SkillForm: React.FC<SkillFormProps> = ({ onSubmit, isLoading }) => {
               <p className="text-xs md:text-sm font-black text-blue-700 uppercase tracking-wider">✨ ဒါတွေကိုလည်း ထပ်ထည့်ကြည့်ပါ -</p>
               <div className="flex flex-wrap gap-2">
                 {relatedSuggestions.map(s => (
-                  <button
-                    key={s}
-                    type="button"
-                    onClick={() => addTag('skills', s)}
-                    className="text-xs md:text-sm font-bold px-3 md:px-4 py-2 md:py-2.5 bg-white hover:bg-blue-600 hover:text-white border-2 border-blue-300 hover:border-blue-600 rounded-xl transition-all duration-200 shadow-sm"
-                  >
-                    + {s}
-                  </button>
+            <button
+              key={s}
+              type="button"
+              onClick={() => addTag('skills', s)}
+              className="text-sm md:text-base font-bold px-4 md:px-5 py-2.5 md:py-3 bg-white hover:bg-blue-600 hover:text-white border-2 border-blue-300 hover:border-blue-600 rounded-xl transition-all duration-200 shadow-sm"
+            >
+              + {s}
+            </button>
                 ))}
               </div>
             </div>
@@ -338,15 +338,15 @@ const SkillForm: React.FC<SkillFormProps> = ({ onSubmit, isLoading }) => {
                   </p>
                   <div className="flex flex-wrap gap-2">
                     {gapAnalysis.missing.length > 0 ? gapAnalysis.missing.map(s => (
-                      <button
-                        key={s}
-                        type="button"
-                        onClick={() => addTag('skills', s)}
-                        className="px-4 py-2.5 bg-gradient-to-r from-rose-50 to-pink-50 text-rose-700 text-xs md:text-sm font-bold rounded-xl flex items-center gap-2 hover:from-rose-100 hover:to-pink-100 transition-all duration-200 border border-rose-200/50 hover:border-rose-300/50 shadow-sm hover:shadow-md"
-                      >
-                        <svg className="w-4 h-4 text-rose-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 6v6m0 0v6m0-6h6m-6 0H6" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"></path></svg>
-                        {s}
-                      </button>
+            <button
+              key={s}
+              type="button"
+              onClick={() => addTag('skills', s)}
+              className="px-5 py-3 bg-gradient-to-r from-rose-50 to-pink-50 text-rose-700 text-sm md:text-base font-bold rounded-xl flex items-center gap-2 hover:from-rose-100 hover:to-pink-100 transition-all duration-200 border border-rose-200/50 hover:border-rose-300/50 shadow-sm hover:shadow-md"
+            >
+              <svg className="w-4 h-4 text-rose-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 6v6m0 0v6m0-6h6m-6 0H6" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"></path></svg>
+              {s}
+            </button>
                     )) : <p className="text-sm text-emerald-600 font-black">🎉 ဂုဏ်ယူပါတယ်! လိုအပ်ချက်များ ပြည့်စုံနေပါပြီ</p>}
                   </div>
                 </div>
@@ -360,7 +360,7 @@ const SkillForm: React.FC<SkillFormProps> = ({ onSubmit, isLoading }) => {
         </div>
 
         <div className="space-y-4">
-          <label className={`block text-sm md:text-base font-black transition-colors ${errors.interests ? 'text-rose-600' : 'text-slate-900'}`}>
+          <label className={`block text-base md:text-lg font-black transition-colors ${errors.interests ? 'text-rose-600' : 'text-slate-900'}`}>
             🎨 သင် စိတ်ဝင်စားသည့် နယ်ပယ် သို့မဟုတ် ဝါသနာ
           </label>
           <div className="flex flex-wrap gap-2 mb-3">
