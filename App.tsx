@@ -70,44 +70,7 @@ const App: React.FC = () => {
               <TrendChart />
             </section>
             
-            <section className="pt-12 md:pt-16 lg:pt-20 pb-8 md:pb-10 lg:pb-12 bg-white/90 backdrop-blur-xl rounded-2xl md:rounded-3xl px-6 md:px-8 lg:px-12 text-slate-900 relative overflow-hidden shadow-2xl border border-slate-200/50">
-              {/* Premium gradient background elements */}
-              <div className="absolute top-0 right-0 w-40 md:w-56 lg:w-80 h-40 md:h-56 lg:h-80 bg-gradient-to-bl from-blue-100/60 to-transparent blur-[100px] md:blur-[120px] rounded-full"></div>
-              <div className="absolute bottom-0 left-0 w-48 md:w-64 lg:w-96 h-48 md:h-64 lg:h-96 bg-gradient-to-tr from-indigo-100/50 to-transparent blur-[80px] md:blur-[100px] rounded-full"></div>
-              <div className="absolute top-1/2 -translate-y-1/2 right-1/3 w-32 md:w-48 h-32 md:h-48 bg-purple-100/40 blur-[60px] rounded-full"></div>
-
-              <div className="max-w-5xl mx-auto text-center mb-12 md:mb-16 lg:mb-20 relative z-10 animate-fade-in">
-                <h2 className="text-3xl md:text-4xl lg:text-5xl font-black mb-6 bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 bg-clip-text text-transparent">အလုပ်အကိုင် အခွင့်အလမ်းများ</h2>
-                <p className="text-slate-600 text-lg md:text-xl max-w-2xl mx-auto font-medium leading-relaxed">ကျွန်ုပ်တို့၏ AI သည် သင့်ကို အောက်ပါဝန်ဆောင်မှုများဖြင့် ကူညီပေးပါမည်</p>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-6 lg:gap-8 relative z-10 mb-10 md:mb-14">
-                {[
-                  { id: 1, icon: <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clipRule="evenodd"/></svg>, title: 'မြန်ဆန်သော ဆန်းစစ်မှု', desc: 'သင့်ရဲ့ ကျွမ်းကျင်မှုတွေကို မိနစ်ပိုင်းအတွင်းမှာပဲ AI က တိကျစွာ ခွဲခြမ်းစိတ်ဖြာပေးပါတယ်။', gradient: 'from-blue-500 to-cyan-500' },
-                  { id: 2, icon: <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M12 7a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0V8.414l-4.293 4.293a1 1 0 01-1.414 0L8 10.414l-4.293 4.293a1 1 0 01-1.414-1.414l5-5a1 1 0 011.414 0L11 10.586 14.586 7H12z" clipRule="evenodd"/></svg>, title: 'ပြည့်စုံသော လမ်းပြမြေပုံ', desc: 'သင်တက်လှမ်းလိုတဲ့ ရာထူးရောက်ဖို့ လိုအပ်တဲ့ အဆင့်တိုင်းကို သေချာဖော်ပြပေးပါတယ်။', gradient: 'from-emerald-500 to-teal-500' },
-                  { id: 3, icon: <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 20 20"><path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z"/></svg>, title: 'အချိန်မရွေး သိမ်းဆည်းနိုင်မှု', desc: 'သင့်ရဲ့ Career Guide ကို ဘရောက်ဇာထဲမှာပဲ အလွယ်တကူ သိမ်းဆည်းပြီး အချိန်မရွေး ပြန်ကြည့်နိုင်ပါတယ်။', gradient: 'from-purple-500 to-pink-500' }
-                ].map((feature) => (
-                  <div key={feature.id} className="group relative">
-                    <div className={`absolute -inset-0.5 bg-gradient-to-r ${feature.gradient} rounded-2xl blur-lg opacity-30 group-hover:opacity-50 transition-opacity duration-500`}></div>
-                    <div className="relative bg-white/80 backdrop-blur-xl p-6 md:p-7 lg:p-8 rounded-2xl border border-slate-200/50 shadow-xl transition-all duration-300 group-hover:border-slate-300/60 group-hover:shadow-2xl">
-                      <div className="text-3xl md:text-4xl mb-4">{feature.icon}</div>
-                      <h4 className="font-black text-lg md:text-xl mb-3 text-slate-900">{feature.title}</h4>
-                      <p className="text-sm md:text-base text-slate-600 leading-relaxed font-medium">{feature.desc}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              <div className="flex justify-center relative z-10">
-                <button
-                  onClick={handleStartAssessment}
-                  className="group px-8 md:px-10 lg:px-12 py-4 md:py-5 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-xl md:rounded-2xl font-black text-base md:text-lg shadow-2xl shadow-blue-500/30 transition-all duration-300 transform hover:scale-105 active:scale-95 hover:shadow-3xl"
-                >
-                  အခုပဲ စတင်လိုက်ပါ
-                  <span className="inline-block ml-2 transition-transform group-hover:translate-x-1">→</span>
-                </button>
-              </div>
-            </section>
+          
           </div>
         )}
 

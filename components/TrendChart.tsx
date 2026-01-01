@@ -7,6 +7,26 @@ const data = [
   { name: 'Graphic Designer', value: 65, color: '#60a5fa' },
   { name: 'UI/UX Designer', value: 75, color: '#93c5fd' },
   { name: 'Content Creator', value: 80, color: '#bfdbfe' },
+  { name: 'Data Analyst', value: 78, color: '#1e40af' },
+  { name: 'Cybersecurity Specialist', value: 82, color: '#1d4ed8' },
+  { name: 'AI/ML Engineer', value: 88, color: '#1e3a8a' },
+  { name: 'Mobile App Developer', value: 76, color: '#1e40af' },
+  { name: 'Cloud Engineer', value: 79, color: '#1d4ed8' },
+  { name: 'Civil Engineer', value: 72, color: '#dc2626' },
+  { name: 'Mechanical Engineer', value: 68, color: '#ea580c' },
+  { name: 'Electrical Engineer', value: 71, color: '#c2410c' },
+  { name: 'Doctor', value: 90, color: '#16a34a' },
+  { name: 'Nurse', value: 85, color: '#15803d' },
+  { name: 'Teacher', value: 83, color: '#7c3aed' },
+  { name: 'Project Manager', value: 75, color: '#be185d' },
+  { name: 'HR Specialist', value: 72, color: '#ec4899' },
+  { name: 'Marketing Manager', value: 76, color: '#f97316' },
+  { name: 'DevOps Engineer', value: 81, color: '#0d9488' },
+  { name: 'Game Developer', value: 73, color: '#14b8a6' },
+  { name: 'Video Editor', value: 71, color: '#2dd4bf' },
+  { name: 'Social Media Manager', value: 78, color: '#5b21b6' },
+  { name: 'School Principal', value: 71, color: '#581c87' },
+  { name: 'University Lecturer', value: 75, color: '#6d28d9' },
 ];
 
 const TrendChart: React.FC = () => {
@@ -49,33 +69,33 @@ const TrendChart: React.FC = () => {
         <div className="group p-5 md:p-6 bg-gradient-to-br from-green-50 to-green-50/50 rounded-2xl border border-green-200/60 shadow-md hover:shadow-lg transition-all duration-300 hover:border-green-300 cursor-default">
           <div className="flex items-start gap-3 mb-2">
             <div className="w-2 h-2 rounded-full bg-green-600 mt-1.5 flex-shrink-0"></div>
-            <p className="text-[10px] text-green-700 font-black uppercase tracking-wider">တိုးတက်မှု အမြန်ဆုံး</p>
+            <p className="text-[10px] text-green-700 font-black uppercase tracking-wider">ဝယ်လိုအား အမြင့်ဆုံး</p>
           </div>
-          <p className="text-base md:text-lg font-black text-green-900">Content Creator</p>
+          <p className="text-base md:text-lg font-black text-green-900">Doctor</p>
         </div>
 
         <div className="group p-5 md:p-6 bg-gradient-to-br from-blue-50 to-blue-50/50 rounded-2xl border border-blue-200/60 shadow-md hover:shadow-lg transition-all duration-300 hover:border-blue-300 cursor-default">
           <div className="flex items-start gap-3 mb-2">
             <div className="w-2 h-2 rounded-full bg-blue-600 mt-1.5 flex-shrink-0"></div>
-            <p className="text-[10px] text-blue-700 font-black uppercase tracking-wider">ဝင်ငွေ အကောင်းဆုံး</p>
+            <p className="text-[10px] text-blue-700 font-black uppercase tracking-wider">နည်းပညာ အလားအလာ</p>
           </div>
-          <p className="text-base md:text-lg font-black text-blue-900">Software Developer</p>
+          <p className="text-base md:text-lg font-black text-blue-900">AI/ML Engineer</p>
         </div>
 
         <div className="group p-5 md:p-6 bg-gradient-to-br from-purple-50 to-purple-50/50 rounded-2xl border border-purple-200/60 shadow-md hover:shadow-lg transition-all duration-300 hover:border-purple-300 cursor-default">
           <div className="flex items-start gap-3 mb-2">
             <div className="w-2 h-2 rounded-full bg-purple-600 mt-1.5 flex-shrink-0"></div>
-            <p className="text-[10px] text-purple-700 font-black uppercase tracking-wider">စွမ်းရည် လိုအပ်ချက်</p>
+            <p className="text-[10px] text-purple-700 font-black uppercase tracking-wider">ပညာရေး လိုအပ်ချက်</p>
           </div>
-          <p className="text-base md:text-lg font-black text-purple-900">AI Basics</p>
+          <p className="text-base md:text-lg font-black text-purple-900">Teacher</p>
         </div>
 
         <div className="group p-5 md:p-6 bg-gradient-to-br from-orange-50 to-orange-50/50 rounded-2xl border border-orange-200/60 shadow-md hover:shadow-lg transition-all duration-300 hover:border-orange-300 cursor-default">
           <div className="flex items-start gap-3 mb-2">
             <div className="w-2 h-2 rounded-full bg-orange-600 mt-1.5 flex-shrink-0"></div>
-            <p className="text-[10px] text-orange-700 font-black uppercase tracking-wider">အလုပ်အကိုင် ပေါများမှု</p>
+            <p className="text-[10px] text-orange-700 font-black uppercase tracking-wider">အင်ဂျင်နီယာ နယ်ပယ်</p>
           </div>
-          <p className="text-base md:text-lg font-black text-orange-900">Remote Work</p>
+          <p className="text-base md:text-lg font-black text-orange-900">Civil Engineer</p>
         </div>
       </div>
     </div>
