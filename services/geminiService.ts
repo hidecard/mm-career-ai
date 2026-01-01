@@ -1,4 +1,4 @@
-import { CareerGuide, Resume, Mentor } from "../types";
+import { CareerGuide, Resume, Mentor, Job, LearningResource, InterviewQuestion, InterviewAnswer } from "../types";
 import { findMatchingMentorsFromDatabase } from "./mentorDatabase";
 
 // Puter.js is loaded via script tag in index.html and provides free, unlimited Gemini API access
@@ -394,4 +394,151 @@ Respond with JSON in the following format:
     throw new Error("သင်ယူရန် အရင်းအမြစ်များ ရှာဖွေရာတွင် အမှားတစ်ခု ဖြစ်ပေါ်ခဲ့ပါသည်။");
   }
 };
+
+
+// Interview Preparation Functions
+
+export const generateInterviewQuestions = async (careerGuide: CareerGuide): Promise<InterviewQuestion[]> => {
+  const prompt = `"${careerGuide.jobTitle}" အလုပ်အတွက် မြန်မာနိုင်ငံတွင် အင်တာဗျူးပြုလုပ်တတ်သော မေးခွန်းများကို ပေးပါ။ အထူးသဖြင့် Behavioral, Technical, Situational, General မေးခွန်းများကို ထည့်ပါ။
+
+Career Guide:
+- Job Title: ${careerGuide.jobTitle}
+- Required Skills: ${careerGuide.requiredSkills.join(', ')}
+- Soft Skills: ${careerGuide.softSkills.join(', ')}
+- Interview Tips: ${careerGuide.interviewTips.join(', ')}
+
+မြန်မာဘာသာဖြင့် JSON format ဖြင့်သာ ပြန်ပေးပါ။ ၈ ခုမှ ၁၀ ခုအထိ မေးခွန်းများကို ပေးပါ။
+
+Respond with JSON in the following format:
+{
+  "questions": [
+    {
+      "category": "behavioral",
+      "question": "မေးခွန်း",
+      "difficulty": "Medium",
+      "tips": ["အကြံပြုချက် ၁", "အကြံပြုချက် ၂"],
+      "sampleAnswer": "နမှုနာ ဖြေကြားချက်",
+      "keyPoints": ["အဓိက အချက် ၁", "အဓိက အချက် ၂"]
+    }
+  ]
+}`;
+
+  const responsePromise = puter.ai.chat(prompt, {
+    model: 'gemini-3-flash-preview',
+    stream: true
+  });
+
+  const text = await streamAIResponse(responsePromise);
+
+  try {
+    const data = parseAIResponse(text);
+    return data.questions.map((q: any, index: number) => ({
+      ...q,
+      id: Math.random().toString(36).substring(2, 11),
+      tips: q.tips || [],
+      keyPoints: q.keyPoints || []
+    })) as InterviewQuestion[];
+  } catch (error) {
+    // Return default questions if AI fails
+    return getDefaultInterviewQuestions(careerGuide.jobTitle);
+  }
+};
+
+export const evaluateInterviewAnswer = async (
+  question: InterviewQuestion, 
+  userAnswer: string
+): Promise<InterviewAnswer> => {
+  const prompt = `အောက်ပါ အင်တာဗျူး မေးခွန်းနှင့် အသုံးပြုသူ၏ ဖြေကြားချက်ကို အကဲဖြတ်ပါ။
+
+မေးခွန်း: ${question.question}
+အမျိုးအစား: ${question.category}
+ခက်ခဲသောအဆင့်: ${question.difficulty}
+အသုံးပြုသူ၏ ဖြေကြားချက်: ${userAnswer}
+
+မြန်မာဘာသာဖြင့် အောက်ပါ format ဖြင့် ပြန်ပေးပါ။
+
+Respond with JSON in the following format:
+{
+  "questionId": "${question.id}",
+  "userAnswer": "${userAnswer}",
+  "suggestedAnswer": "ပိုမိုကောင်းမွန်သော ဖြေကြားချက်",
+  "improvementTips": ["ပြုပြင်ရန် အကြံပြုချက် ၁", "ပြုပြင်ရန် အကြံပြုချက် ၂"],
+  "score": 75,
+  "feedback": "ဖြေကြားချက်အတွက် အကဲဖြတ်ချက်"
+}`;
+
+  const responsePromise = puter.ai.chat(prompt, {
+    model: 'gemini-3-flash-preview',
+    stream: true
+  });
+
+  const text = await streamAIResponse(responsePromise);
+
+  try {
+    const data = parseAIResponse(text);
+    return {
+      ...data,
+      questionId: question.id,
+      userAnswer: userAnswer
+    } as InterviewAnswer;
+  } catch (error) {
+    // Return basic evaluation if AI fails
+    const basicScore = Math.min(100, Math.max(0, userAnswer.length * 2));
+    return {
+      questionId: question.id,
+      userAnswer: userAnswer,
+      suggestedAnswer: question.sampleAnswer || "သင့်ဖြေကြားချက်ကို ပိုမိုကောင်းအောင် ပြုပြင်ပါ။",
+      improvementTips: ["ပိုမိုအသေးစိတ်ရေးသားပါ", "ဥပမာများ ထည့်သွင်းပါ"],
+      score: basicScore,
+      feedback: userAnswer.length > 50 ? "ကောင်းမွန်ပါသည်။ ပိုမိုကောင်းအောင် ကြိုးစားပါ။" : "ပိုမိုအသေးစိတ် ဖြေကြားပါ။"
+    };
+  }
+};
+
+// Default interview questions for fallback
+function getDefaultInterviewQuestions(jobTitle: string): InterviewQuestion[] {
+  return [
+    {
+      id: Math.random().toString(36).substring(2, 11),
+      category: 'general',
+      question: `သင့်အကြောင်း အနည်းငယ် ပြောပြပါ။`,
+      difficulty: 'Easy',
+      tips: ["ကိုယ်ရေးအကျဉ်းနှင့် အဓိက အောင်မြင်မှုများကို ပြောပြပါ"],      sampleAnswer: `ကျွန်တော်/ကျွန်မသည် [အမည်] ဖြစ်ပါသည်။ [အဓိက ကျွမ်းကျင်မှု] တွင် [နှစ်အရေအတွက်] နှစ်ကြာ် အတွေ့အကြုံရှိပါသည်။`,
+      keyPoints: ["ကိုယ်ရေးအကျဉ်း", "အဓိက အောင်မြင်မှု", "ပန်းတိုင်"]
+    },
+    {
+      id: Math.random().toString(36).substring(2, 11),
+      category: 'behavioral',
+      question: `သင်၏ အားသာချက်များနှင့် အားနည်းချက်များကို ပြောပြပါ။`,
+      difficulty: 'Medium',
+      tips: ["အားသာချက်များကို ဥပမာဖြင့် ပြောပြပါ", "အားနည်းချက်များကို ပြင်ဆင်ရန် ကြိုးစားနေကြောင်း ပြောပြပါ"],
+      keyPoints: ["အားသာချက် ၃ ခု", "အားနည်းချက် ၁ ခု", "ပြုပြင်မှု"]
+    },
+    {
+      id: Math.random().toString(36).substring(2, 11),
+      category: 'technical',
+      question: `${jobTitle} အတွက် လိုအပ်သော အဓိက ကျွမ်းကျင်မှုများကို ဖော်ပြပါ။`,
+      difficulty: 'Medium',
+      tips: ["Career Guide မှ လိုအပ်သော ကျွမ်းကျင်မှုများကို အသုံးပြုပါ"],
+      keyPoints: ["နည်းပညာ ကျွမ်းကျင်မှု", "နိုင်ငံရေး ကျွမ်းကျင်မှု", "ပြောင်းလဲနိုင်မှု"]
+    },
+    {
+      id: Math.random().toString(36).substring(2, 11),
+      category: 'situational',
+      question: `အလုပ်တွင် ဖိအားများပြီး ရှုပ်ထွေးသော အခြေအနေတစ်ခုကို မည်သို့ ကိုင်တွယ်မလဲ။`,
+      difficulty: 'Hard',
+      tips: ["STAR method ကို အသုံးပြုပါ", "တိတ်ဆိတ်စွာ စဉ်းစားပြီး ဖြေကြားပါ"],
+      keyPoints: ["အခြေအနေကို နားလည်ခြင်း", "ဆုံးဖြတ်ချက်ချခြင်း", "ရလဒ်"]
+    },
+    {
+      id: Math.random().toString(36).substring(2, 11),
+      category: 'general',
+      question: `သင်ဘာကြောင့် ${jobTitle} အလုပ်ကို လျှောက်ထားတာလဲ။`,
+      difficulty: 'Easy',
+      tips: ["ကိုယ်တိုင် စိတ်ဝင်စားမှုကို ပြောပြပါ", "ကုမ္ပဏီနှင့် လုပ်ငန်းအကြောင်း သိရှိကြောင်း ပြပါ"],
+      keyPoints: ["စိတ်ဝင်စားမှု", "ကိုက်ညီခြင်း", "ပန်းတိုင်"]
+    }
+  ];
+}
+
 

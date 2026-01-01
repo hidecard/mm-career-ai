@@ -12,7 +12,8 @@ const Navbar: React.FC<NavbarProps> = ({ onNav, currentPage }) => {
     { id: 'home', label: 'ပင်မစာမျက်နှာ' },
     { id: 'assessment', label: 'ဆန်းစစ်ချက်' },
     { id: 'trends', label: 'အလုပ်အကိုင်ရေစီးကြောင်း' },
-    { id: 'resume-builder', label: 'Resume Builder' }
+    { id: 'resume-builder', label: 'Resume Builder' },
+    { id: 'interview-prep', label: 'Interview Prep' }
   ];
 
   const handleNavClick = (id: string) => {

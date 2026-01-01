@@ -5,6 +5,7 @@ import SkillForm from './components/SkillForm';
 import GuideResult from './components/GuideResult';
 import TrendChart from './components/TrendChart';
 import ResumeBuilder from './components/ResumeBuilder';
+import InterviewPrep from './components/InterviewPrep';
 import { generateCareerGuide } from './services/geminiService';
 import { CareerGuide } from './types';
 
@@ -103,6 +104,30 @@ const App: React.FC = () => {
                   </div>
                   <h3 className="text-xl font-bold text-slate-700 mb-2">ပထမဦးစွာ အလုပ်လမ်းညွှန်ချက် ရယူပါ</h3>
                   <p className="text-slate-500">သင့်အတွက် သင့်စာရွက်စာတမ်း ဖန်တီးရန် အရင်းအမြစ်များ လိုအပ်ပါသည်။</p>
+                  <button
+                    onClick={() => handleNav('assessment')}
+                    className="mt-4 px-6 py-3 bg-blue-600 text-white rounded-xl font-bold hover:bg-blue-700 transition-colors"
+                  >
+                    အခုပဲ စစ်ဆေးကြည့်မယ်
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+
+        {currentPage === 'interview-prep' && (
+          <div className="animate-fade-in w-full px-4 sm:px-6 lg:px-8">
+            {guide ? (
+              <InterviewPrep careerGuide={guide} />
+            ) : (
+              <div className="flex items-center justify-center min-h-[400px]">
+                <div className="text-center">
+                  <div className="w-16 h-16 mx-auto mb-4 bg-blue-100 rounded-full flex items-center justify-center">
+                    <span className="text-3xl">🎤</span>
+                  </div>
+                  <h3 className="text-xl font-bold text-slate-700 mb-2">ပထမဦးစွာ အလုပ်လမ်းညွှန်ချက် ရယူပါ</h3>
+                  <p className="text-slate-500">အင်တာဗျူး ပြင်ဆင်ရန် အရင်းအမြစ်များ လိုအပ်ပါသည်။</p>
                   <button
                     onClick={() => handleNav('assessment')}
                     className="mt-4 px-6 py-3 bg-blue-600 text-white rounded-xl font-bold hover:bg-blue-700 transition-colors"

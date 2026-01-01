@@ -118,6 +118,35 @@ export interface Job {
   contactPhone?: string;
 }
 
+export interface InterviewQuestion {
+  id: string;
+  category: 'behavioral' | 'technical' | 'situational' | 'general';
+  question: string;
+  difficulty: 'Easy' | 'Medium' | 'Hard';
+  tips: string[];
+  sampleAnswer?: string;
+  keyPoints: string[];
+}
+
+export interface InterviewSession {
+  id: string;
+  jobTitle: string;
+  questions: InterviewQuestion[];
+  answers: { questionId: string; answer: string; feedback?: string; score?: number }[];
+  startedAt: string;
+  completedAt?: string;
+  overallScore?: number;
+}
+
+export interface InterviewAnswer {
+  questionId: string;
+  userAnswer: string;
+  suggestedAnswer: string;
+  improvementTips: string[];
+  score: number;
+  feedback: string;
+}
+
 export interface LearningResource {
   id: string;
   title: string;
