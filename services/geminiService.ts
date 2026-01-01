@@ -1,4 +1,5 @@
-import { CareerGuide } from "../types";
+import { CareerGuide, Resume, Mentor } from "../types";
+import { findMatchingMentorsFromDatabase } from "./mentorDatabase";
 
 // Puter.js is loaded via script tag in index.html and provides free, unlimited Gemini API access
 // No API key required - uses the "User-Pays" model
@@ -199,6 +200,196 @@ Respond with JSON in the following format:
       text: text,
       jobs: []
     };
+  }
+};
+
+export const generateResumeSuggestions = async (careerGuide: CareerGuide, resumeData: Partial<Resume>): Promise<{
+  summary: string;
+  skills: string[];
+  experience: string[];
+  keywords: string[];
+}> => {
+  const prompt = `အောက်ပါ Career Guide နှင့် Resume data အပေါ် အခြေခံ၍ မြန်မာနိုင်ငံရှိ အလုပ်ရှာဖွေသူများအတွက် အသုံးဝင်သော Resume suggestions များကို ပေးပါ။
+
+Career Guide:
+- Job Title: ${careerGuide.jobTitle}
+- Required Skills: ${careerGuide.requiredSkills.join(', ')}
+- Soft Skills: ${careerGuide.softSkills.join(', ')}
+- Recommended Certifications: ${careerGuide.recommendedCertifications.join(', ')}
+
+Resume Data:
+${JSON.stringify(resumeData, null, 2)}
+
+မြန်မာဘာသာဖြင့် JSON format ဖြင့်သာ ပြန်ပေးပါ။
+
+Respond with JSON in the following format:
+{
+  "summary": "အသုံးပြုသူ၏ ကျွမ်းကျင်မှုများနှင့် အတွေ့အကြုံများကို အကျဉ်းချုပ် ရေးသားထားသော စာသား",
+  "skills": ["အကြံပြုသော ကျွမ်းကျင်မှု ၁", "အကြံပြုသော ကျွမ်းကျင်မှု ၂"],
+  "experience": ["အတွေ့အကြုံ အကြံပြုချက် ၁", "အတွေ့အကြုံ အကြံပြုချက် ၂"],
+  "keywords": ["အလုပ်ရှာဖွေရာတွင် အသုံးဝင်သော keyword ၁", "keyword ၂"]
+}`;
+
+  const responsePromise = puter.ai.chat(prompt, {
+    model: 'gemini-3-flash-preview',
+    stream: true
+  });
+
+  const text = await streamAIResponse(responsePromise);
+
+  try {
+    const data = parseAIResponse(text);
+    return data;
+  } catch (error) {
+    throw new Error("Resume suggestions များ ဖန်တီးရာတွင် အမှားတစ်ခု ဖြစ်ပေါ်ခဲ့ပါသည်။");
+  }
+};
+
+export const findMatchingMentors = async (careerGuide: CareerGuide, userInterests: string): Promise<Mentor[]> => {
+  const prompt = `အောက်ပါ Career Guide နှင့် အသုံးပြုသူ၏ စိတ်ဝင်စားမှုများအပေါ် အခြေခံ၍ ကိုက်ညီသော Mentors များကို ရှာဖွေပေးပါ။ မြန်မာနိုင်ငံရှိ အလုပ်အကိုင် လောကမှ အတွေ့အကြုံရှိသူများကို ဦးစားပေးပါ။
+
+Career Guide:
+- Job Title: ${careerGuide.jobTitle}
+- Required Skills: ${careerGuide.requiredSkills.join(', ')}
+- Soft Skills: ${careerGuide.softSkills.join(', ')}
+- Long Term Goal: ${careerGuide.longTermGoal}
+
+User Interests: ${userInterests}
+
+မြန်မာဘာသာဖြင့် JSON format ဖြင့်သာ ပြန်ပေးပါ။ ၃ ဦးမှ ၅ ဦးအထိ ကိုက်ညီသော Mentors ကို ပေးပါ။
+
+Respond with JSON in the following format:
+{
+  "mentors": [
+    {
+      "name": "မိုတာ အမည်",
+      "jobTitle": "လက်ရှိ အလုပ်ခေါင်းစဉ်",
+      "company": "လုပ်ငန်းအမည်",
+      "industry": "လုပ်ငန်းကဏ္ဍ",
+      "experience": "အတွေ့အကြုံ နှစ်အရေအတွက်",
+      "location": "တည်နေရာ",
+      "expertise": ["ကျွမ်းကျင်မှု ၁", "ကျွမ်းကျင်မှု ၂"],
+      "availability": "Available",
+      "bio": "မိုတာ၏ အကျဉ်းချုပ် ကိုယ်ရေးအကျဉ်း",
+      "email": "mentor@example.com",
+      "matchScore": 85,
+      "matchedInterests": ["ကိုက်ညီသော စိတ်ဝင်စားမှု ၁", "ကိုက်ညီသော စိတ်ဝင်စားမှု ၂"]
+    }
+  ]
+}`;
+
+  const responsePromise = puter.ai.chat(prompt, {
+    model: 'gemini-3-flash-preview',
+    stream: true
+  });
+
+  const text = await streamAIResponse(responsePromise);
+
+  try {
+    const data = parseAIResponse(text);
+    return data.mentors.map((mentor: any) => ({
+      ...mentor,
+      id: Math.random().toString(36).substring(2, 11),
+      linkedin: mentor.linkedin || undefined
+    })) as Mentor[];
+  } catch (error) {
+    throw new Error("Mentors ရှာဖွေရာတွင် အမှားတစ်ခု ဖြစ်ပေါ်ခဲ့ပါသည်။");
+  }
+};
+
+export const searchJobOpportunities = async (careerGuide: CareerGuide, location: string = 'ရန်ကင်း'): Promise<Job[]> => {
+  const prompt = `မြန်မာနိုင်ငံတွင် "${careerGuide.jobTitle}" နှင့် ပတ်သက်သော အလုပ်အကိုင် အခွင့်အလမ်း ၅ ခုမှ ၈ ခုအထိ ရှာဖွေပေးပါ။ အထူးသဖြင့် ${location} ဒေသတွင် ရှိသော အလုပ်အကိုင်များကို ဦးစားပေးပါ။
+
+Career Guide:
+- Job Title: ${careerGuide.jobTitle}
+- Required Skills: ${careerGuide.requiredSkills.join(', ')}
+- Salary Range: ${careerGuide.salaryRange}
+
+မြန်မာဘာသာဖြင့် JSON format ဖြင့်သာ ပြန်ပေးပါ။ အလုပ်အကိုင် အခွင့်အလမ်းများကို အောက်ပါ format ဖြင့် ပေးပါ။
+
+Respond with JSON in the following format:
+{
+  "jobs": [
+    {
+      "title": "အလုပ်ခေါင်းစဉ်",
+      "company": "ကုမ္ပဏီအမည်",
+      "location": "တည်နေရာ",
+      "salary": "လစာအပြင်",
+      "type": "Full-time",
+      "description": "အလုပ်အကြောင်း အသေးစိတ်",
+      "requirements": ["လိုအပ်သော ကျွမ်းကျင်မှု ၁", "လိုအပ်သော ကျွမ်းကျင်မှု ၂"],
+      "benefits": ["အကျိုးခံစားခွင့် ၁", "အကျိုးခံစားခွင့် ၂"],
+      "postedDate": "2024-01-15",
+      "source": "အရင်းအမြစ် (ဥပမာ: JobStreet, Indeed, Company Website)",
+      "url": "https://example.com/job-link"
+    }
+  ]
+}`;
+
+  const responsePromise = puter.ai.chat(prompt, {
+    model: 'gemini-3-flash-preview',
+    stream: true
+  });
+
+  const text = await streamAIResponse(responsePromise);
+
+  try {
+    const data = parseAIResponse(text);
+    return data.jobs.map((job: any, index: number) => ({
+      ...job,
+      id: Math.random().toString(36).substring(2, 11),
+      matchScore: Math.floor(Math.random() * 40) + 60, // Random score between 60-100
+      applicationDeadline: job.applicationDeadline || undefined
+    })) as Job[];
+  } catch (error) {
+    throw new Error("အလုပ်အကိုင် အခွင့်အလမ်းများ ရှာဖွေရာတွင် အမှားတစ်ခု ဖြစ်ပေါ်ခဲ့ပါသည်။");
+  }
+};
+
+export const findLearningResources = async (careerGuide: CareerGuide, userSkills: string[]): Promise<LearningResource[]> => {
+  const prompt = `မြန်မာနိုင်ငံရှိ လူငယ်များအတွက် "${careerGuide.jobTitle}" နှင့် ပတ်သက်သော သင်ယူရန် အရင်းအမြစ်များ ၆ ခုမှ ၈ ခုအထိ အကြံပြုပေးပါ။ အထူးသဖြင့် အွန်လိုင်းသင်ယူရန် အရင်းအမြစ်များကို ဦးစားပေးပါ။
+
+Career Guide:
+- Job Title: ${careerGuide.jobTitle}
+- Required Skills: ${careerGuide.requiredSkills.join(', ')}
+- Current User Skills: ${userSkills.join(', ')}
+
+မြန်မာဘာသာဖြင့် JSON format ဖြင့်သာ ပြန်ပေးပါ။ သင်ယူရန် အရင်းအမြစ်များကို အောက်ပါ format ဖြင့် ပေးပါ။
+
+Respond with JSON in the following format:
+{
+  "resources": [
+    {
+      "title": "သင်ယူရန် အရင်းအမြစ် အမည်",
+      "type": "Course",
+      "platform": "Udemy / Coursera / YouTube / အခြား",
+      "description": "အရင်းအမြစ် အကြောင်း အသေးစိတ်",
+      "duration": "၃ လ / ၂၀ နာရီ / အခြား",
+      "level": "Beginner",
+      "price": "အခမဲ့ / ၅၀၀၀၀ ကျပ် / အခြား",
+      "url": "https://example.com/resource-link",
+      "skills": ["ကျွမ်းကျင်မှု ၁", "ကျွမ်းကျင်မှု ၂"],
+      "rating": 4.5
+    }
+  ]
+}`;
+
+  const responsePromise = puter.ai.chat(prompt, {
+    model: 'gemini-3-flash-preview',
+    stream: true
+  });
+
+  const text = await streamAIResponse(responsePromise);
+
+  try {
+    const data = parseAIResponse(text);
+    return data.resources.map((resource: any, index: number) => ({
+      ...resource,
+      id: Math.random().toString(36).substring(2, 11),
+      matchScore: Math.floor(Math.random() * 40) + 60 // Random score between 60-100
+    })) as LearningResource[];
+  } catch (error) {
+    throw new Error("သင်ယူရန် အရင်းအမြစ်များ ရှာဖွေရာတွင် အမှားတစ်ခု ဖြစ်ပေါ်ခဲ့ပါသည်။");
   }
 };
 

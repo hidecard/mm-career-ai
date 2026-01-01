@@ -4,6 +4,7 @@ import Hero from './components/Hero';
 import SkillForm from './components/SkillForm';
 import GuideResult from './components/GuideResult';
 import TrendChart from './components/TrendChart';
+import ResumeBuilder from './components/ResumeBuilder';
 import { generateCareerGuide } from './services/geminiService';
 import { CareerGuide } from './types';
 
@@ -89,12 +90,36 @@ const App: React.FC = () => {
             <TrendChart />
           </div>
         )}
+
+        {currentPage === 'resume-builder' && (
+          <div className="animate-fade-in w-full px-4 sm:px-6 lg:px-8">
+            {guide ? (
+              <ResumeBuilder careerGuide={guide} userSkills={''} userInterests={''} />
+            ) : (
+              <div className="flex items-center justify-center min-h-[400px]">
+                <div className="text-center">
+                  <div className="w-16 h-16 mx-auto mb-4 bg-blue-100 rounded-full flex items-center justify-center">
+                    <span className="text-3xl">📄</span>
+                  </div>
+                  <h3 className="text-xl font-bold text-slate-700 mb-2">ပထမဦးစွာ အလုပ်လမ်းညွှန်ချက် ရယူပါ</h3>
+                  <p className="text-slate-500">သင့်အတွက် သင့်စာရွက်စာတမ်း ဖန်တီးရန် အရင်းအမြစ်များ လိုအပ်ပါသည်။</p>
+                  <button
+                    onClick={() => handleNav('assessment')}
+                    className="mt-4 px-6 py-3 bg-blue-600 text-white rounded-xl font-bold hover:bg-blue-700 transition-colors"
+                  >
+                    အခုပဲ စစ်ဆေးကြည့်မယ်
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+        )}
       </main>
 
-      <footer className="bg-white/90 backdrop-blur-xl border-t border-slate-200/50 w-full no-print mt-8 md:mt-12 lg:mt-16 text-slate-900 shadow-lg">
-        <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-12 py-8 md:py-12 lg:py-16">
+      <footer className="bg-white border-t border-slate-200 w-full no-print mt-2 md:mt-4 text-slate-900">
+        <div className="w-full px-4 sm:px-6 lg:px-8 py-6 md:py-8">
           {/* Main footer grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 lg:gap-10 mb-8 md:mb-10">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 mt-4 gap-6 md:gap-8 mb-6 md:mb-8">
             {/* Brand section */}
             <div className="lg:col-span-2 space-y-4">
               <div className="flex items-center gap-3">
@@ -127,9 +152,9 @@ const App: React.FC = () => {
             </div>
 
             {/* Quick Links section */}
-            <div className="space-y-6">
+            <div className="space-y-4">
               <div className="space-y-2">
-                <h5 className="font-black text-slate-900 uppercase tracking-widest text-xs md:text-sm border-l-4 border-blue-500 pl-4 py-1">🔗 Quick Links</h5>
+                <h5 className="font-black text-slate-900 uppercase tracking-widest text-xs md:text-sm border-l-4 border-blue-500 pl-4 py-1">Quick Links</h5>
                 <div className="w-8 h-1 bg-gradient-to-r from-blue-500 to-transparent rounded-full ml-4"></div>
               </div>
               <ul className="space-y-3.5 text-sm md:text-base">
@@ -155,7 +180,7 @@ const App: React.FC = () => {
             </div>
 
             {/* Community section */}
-            <div className="space-y-6">
+            <div className="space-y-4">
               <div className="space-y-2">
                 <h5 className="font-black text-slate-900 uppercase tracking-widest text-xs md:text-sm border-l-4 border-indigo-500 pl-4 py-1 flex items-center gap-2">
                   <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
@@ -189,15 +214,14 @@ const App: React.FC = () => {
           </div>
 
           {/* Divider */}
-          <div className="h-px bg-gradient-to-r from-slate-200 via-slate-300 to-slate-200 my-6 md:my-8"></div>
+          <div className="h-px bg-gradient-to-r from-slate-200 via-slate-300 to-slate-200 my-4 md:my-6"></div>
 
           {/* Bottom copyright section */}
-          <div className="flex flex-col sm:flex-row justify-between items-center gap-4 sm:gap-3 text-center sm:text-left">
-            <p className="text-xs md:text-sm text-slate-600 font-black tracking-wider">
+          <div className="flex flex-col sm:flex-row justify-between items-center gap-3 text-center sm:text-left">
+            <p className="text-xs md:text-sm text-slate-600 font-medium">
               <span className="block sm:inline">© ၂၀၂၅ MyanCareer AI</span>
               <span className="hidden sm:inline mx-2">•</span>
-              <span className="text-slate-500 font-medium">Empowering Myanmar Youth</span>
-              <span className="ml-2">🚀</span>
+              <span className="text-slate-500">Empowering Myanmar Youth</span>
             </p>
             <div className="flex gap-4 md:gap-6 text-xs md:text-sm">
               <a href="#" className="text-slate-600 hover:text-blue-600 transition-colors duration-300 font-bold">မူဝါဒများ</a>
@@ -207,16 +231,13 @@ const App: React.FC = () => {
           </div>
 
           {/* Footer note */}
-          <div className="mt-4 md:mt-6 pt-4 md:pt-6 border-t border-slate-200/50">
-            <p className="text-center text-xs text-slate-500 font-medium leading-relaxed">
-              Made with
+          <div className="mt-4 pt-4 border-t border-slate-200/50">
+            <p className="text-center text-xs text-slate-500">
+              Made with 
               <svg className="w-4 h-4 inline mx-1 text-red-500" fill="currentColor" viewBox="0 0 20 20">
                 <path fillRule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clipRule="evenodd"/>
               </svg>
-              for Myanmar youth who dare to dream big. Keep learning, keep growing!
-              <svg className="w-4 h-4 inline ml-1" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M12.395 2.553a1 1 0 00-1.45-.385c-.345.23-.614.558-.822.88-.214.33-.403.713-.57 1.116-.334.804-.614 1.768-.84 2.734a31.365 31.365 0 00-.613 3.58 2.64 2.64 0 01-.945-1.067c-.328-.68-.398-1.534-.398-2.654A1 1 0 005.05 6.05 6.981 6.981 0 003 11a7 7 0 1011.95-4.95c-.592-.591-.98-.985-1.348-1.467-.363-.476-.724-1.063-1.207-2.03zM12.12 15.12A3 3 0 017 13s.879.5 2.5.5c0-1 .5-4 1.25-4.5.5 1 .786 1.293 1.371 1.879A2.99 2.99 0 0113 13a2.99 2.99 0 01-.879 2.121z" clipRule="evenodd"/>
-              </svg>
+              for Myanmar youth who dare to dream big.
             </p>
           </div>
         </div>

@@ -11,7 +11,8 @@ const Navbar: React.FC<NavbarProps> = ({ onNav, currentPage }) => {
   const navItems = [
     { id: 'home', label: 'ပင်မစာမျက်နှာ' },
     { id: 'assessment', label: 'ဆန်းစစ်ချက်' },
-    { id: 'trends', label: 'အလုပ်အကိုင်ရေစီးကြောင်း' }
+    { id: 'trends', label: 'အလုပ်အကိုင်ရေစီးကြောင်း' },
+    { id: 'resume-builder', label: 'Resume Builder' }
   ];
 
   const handleNavClick = (id: string) => {
