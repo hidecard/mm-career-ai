@@ -305,7 +305,7 @@ Career Guide:
 - Required Skills: ${careerGuide.requiredSkills.join(', ')}
 - Salary Range: ${careerGuide.salaryRange}
 
-မြန်မာဘာသာဖြင့် JSON format ဖြင့်သာ ပြန်ပေးပါ။ အလုပ်အကိုင် အခွင့်အလမ်းများကို အောက်ပါ format ဖြင့် ပေးပါ။
+မြန်မာဘာသာဖြင့် JSON format ဖြင့်သာ ပြန်ပေးပါ။ အလုပ်အကိုင် အခွင့်အလမ်းများကို အောက်ပါ format ဖြင့် ပေးပါ။ အရင်းအမြစ်တွင် ဖော်ပြထားသော ဆက်သွယ်ရန် အချက်အလက် (email၊ phone) များကိုလည်း ထည့်သွင်းပါ။
 
 Respond with JSON in the following format:
 {
@@ -321,7 +321,9 @@ Respond with JSON in the following format:
       "benefits": ["အကျိုးခံစားခွင့် ၁", "အကျိုးခံစားခွင့် ၂"],
       "postedDate": "2024-01-15",
       "source": "အရင်းအမြစ် (ဥပမာ: JobStreet, Indeed, Company Website)",
-      "url": "https://example.com/job-link"
+      "url": "https://example.com/job-link",
+      "contactEmail": "hr@company.com",
+      "contactPhone": "09-123456789"
     }
   ]
 }`;

@@ -503,7 +503,7 @@ const ResumeBuilder: React.FC<ResumeBuilderProps> = ({ careerGuide, userSkills, 
                     className="p-4 bg-gradient-to-r from-slate-50 to-slate-100 rounded-xl border border-slate-200 hover:border-green-200 transition-all"
                   >
                     <div className="flex items-start gap-3">
-                      <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-emerald-500 rounded-xl flex items-center justify-center text-white font-bold text-lg">
+                      <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-emerald-500 rounded-xl flex items-center justify-center text-white font-bold text-lg shrink-0">
                         <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m8 0V8a2 2 0 01-2 2H8a2 2 0 01-2-2V6m8 0H8m0 0V4" />
                         </svg>
@@ -529,13 +529,49 @@ const ResumeBuilder: React.FC<ResumeBuilderProps> = ({ careerGuide, userSkills, 
                         </span>
                       </div>
                       <p className="text-xs text-slate-600 mb-2">{job.salary}</p>
-                      <div className="flex flex-wrap gap-1">
+                      <div className="flex flex-wrap gap-1 mb-3">
                         {job.requirements.slice(0, 2).map((req, i) => (
                           <span key={i} className="px-2 py-0.5 bg-green-50 text-green-600 rounded text-xs font-medium">
                             {req}
                           </span>
                         ))}
                       </div>
+                      
+                      {/* Contact Information */}
+                      {(job.contactEmail || job.contactPhone) && (
+                        <div className="pt-3 border-t border-slate-100">
+                          <p className="text-xs font-bold text-slate-500 mb-2 flex items-center gap-1">
+                            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                            </svg>
+                            ဆက်သွယ်ရန်
+                          </p>
+                          <div className="space-y-1">
+                            {job.contactEmail && (
+                              <a 
+                                href={`mailto:${job.contactEmail}`}
+                                className="flex items-center gap-1.5 text-xs text-blue-600 hover:text-blue-700 font-medium"
+                              >
+                                <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                                </svg>
+                                {job.contactEmail}
+                              </a>
+                            )}
+                            {job.contactPhone && (
+                              <a 
+                                href={`tel:${job.contactPhone}`}
+                                className="flex items-center gap-1.5 text-xs text-blue-600 hover:text-blue-700 font-medium"
+                              >
+                                <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                                </svg>
+                                {job.contactPhone}
+                              </a>
+                            )}
+                          </div>
+                        </div>
+                      )}
                     </div>
                   </div>
                 ))}
@@ -595,13 +631,28 @@ const ResumeBuilder: React.FC<ResumeBuilderProps> = ({ careerGuide, userSkills, 
                         </span>
                       </div>
                       <p className="text-xs text-slate-600 mb-2">{resource.duration} • {resource.price}</p>
-                      <div className="flex flex-wrap gap-1">
+                      <div className="flex flex-wrap gap-1 mb-3">
                         {resource.skills.slice(0, 2).map((skill, i) => (
                           <span key={i} className="px-2 py-0.5 bg-blue-50 text-blue-600 rounded text-xs font-medium">
                             {skill}
                           </span>
                         ))}
                       </div>
+                      
+                      {/* Redirect Link */}
+                      {resource.url && (
+                        <a
+                          href={resource.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="mt-3 pt-3 border-t border-slate-100 flex items-center justify-center gap-2 w-full py-2 bg-blue-600 text-white rounded-lg text-sm font-bold hover:bg-blue-700 transition-colors"
+                        >
+                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                          </svg>
+                          သင်ယူရန် သွားမည်
+                        </a>
+                      )}
                     </div>
                   </div>
                 ))}

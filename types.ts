@@ -114,6 +114,8 @@ export interface Job {
   source: string;
   url?: string;
   matchScore: number;
+  contactEmail?: string;
+  contactPhone?: string;
 }
 
 export interface LearningResource {
