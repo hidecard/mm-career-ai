@@ -17,7 +17,12 @@ const Hero: React.FC<HeroProps> = ({ onStart }) => {
       <div className="mx-auto w-full px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="w-full max-w-5xl mx-auto text-center animate-fade-in">
           <div className="inline-block mb-6 md:mb-8">
-            <span className="text-xs sm:text-sm font-black text-blue-600 uppercase tracking-[2px] bg-blue-50/80 backdrop-blur px-4 py-2 rounded-full border border-blue-200/50 shadow-sm">🚀 MyanCareer AI - Your Career Compass</span>
+            <span className="text-xs sm:text-sm font-black text-blue-600 uppercase tracking-[2px] bg-blue-50/80 backdrop-blur px-4 py-2 rounded-full border border-blue-200/50 shadow-sm flex items-center gap-2">
+              <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.409l-7-14z"/>
+              </svg>
+              MyanCareer AI - Your Career Compass
+            </span>
           </div>
 
           <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black tracking-tight text-slate-900 mb-4 md:mb-6 leading-[1.2] lg:leading-[1.25]">

@@ -65,24 +65,6 @@ const App: React.FC = () => {
         {currentPage === 'home' && (
           <div className="space-y-8 md:space-y-12 px-4 sm:px-6 lg:px-8">
             <Hero onStart={handleStartAssessment} />
-            
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4 lg:gap-5 no-print px-2 md:px-0 max-w-5xl mx-auto">
-               {[
-                 { label: 'ကူညီပေးပြီးသူ', val: '၁၀,၀၀၀+', icon: '👥', color: 'from-blue-500 to-blue-600', lightColor: 'bg-blue-50', textColor: 'text-blue-600' },
-                 { label: 'အလုပ်အကိုင် ကဏ္ဍ', val: '၂၅+', icon: '💼', color: 'from-indigo-500 to-indigo-600', lightColor: 'bg-indigo-50', textColor: 'text-indigo-600' },
-                 { label: 'ကျွမ်းကျင်မှု နယ်ပယ်', val: '၂၀၀+', icon: '🎯', color: 'from-emerald-500 to-emerald-600', lightColor: 'bg-emerald-50', textColor: 'text-emerald-600' },
-                 { label: 'AI တိကျမှု', val: '၉၈%', icon: '✨', color: 'from-amber-500 to-amber-600', lightColor: 'bg-amber-50', textColor: 'text-amber-600' }
-               ].map((stat, i) => (
-                 <div key={i} className={`group relative overflow-hidden ${stat.lightColor} p-5 md:p-6 rounded-2xl md:rounded-2xl border border-white/40 shadow-lg backdrop-blur-sm text-center flex flex-col justify-center transition-all duration-300 hover:shadow-xl hover:scale-105 hover:border-white/60 cursor-default`}>
-                    <div className={`absolute top-0 right-0 w-24 h-24 bg-gradient-to-r ${stat.color} opacity-10 blur-2xl -mr-12 -mt-12 group-hover:scale-150 transition-transform duration-500`}></div>
-                    <div className="relative z-10">
-                      <div className="text-3xl md:text-4xl mb-2">{stat.icon}</div>
-                      <p className={`text-2xl md:text-3xl lg:text-4xl font-black ${stat.textColor} mb-2`}>{stat.val}</p>
-                      <p className="text-[11px] md:text-xs text-slate-600 font-bold uppercase tracking-wider">{stat.label}</p>
-                    </div>
-                 </div>
-               ))}
-            </div>
 
             <section id="trends" className="animate-fade-in scroll-mt-16">
               <TrendChart />
@@ -101,9 +83,9 @@ const App: React.FC = () => {
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-6 lg:gap-8 relative z-10 mb-10 md:mb-14">
                 {[
-                  { id: 1, icon: '⚡', title: 'မြန်ဆန်သော ဆန်းစစ်မှု', desc: 'သင့်ရဲ့ ကျွမ်းကျင်မှုတွေကို မိနစ်ပိုင်းအတွင်းမှာပဲ AI က တိကျစွာ ခွဲခြမ်းစိတ်ဖြာပေးပါတယ်။', gradient: 'from-blue-500 to-cyan-500' },
-                  { id: 2, icon: '🗺️', title: 'ပြည့်စုံသော လမ်းပြမြေပုံ', desc: 'သင်တက်လှမ်းလိုတဲ့ ရာထူးရောက်ဖို့ လိုအပ်တဲ့ အဆင့်တိုင်းကို သေချာဖော်ပြပေးပါတယ်။', gradient: 'from-emerald-500 to-teal-500' },
-                  { id: 3, icon: '💾', title: 'အချိန်မရွေး သိမ်းဆည်းနိုင်မှု', desc: 'သင့်ရဲ့ Career Guide ကို ဘရောက်ဇာထဲမှာပဲ အလွယ်တကူ သိမ်းဆည်းပြီး အချိန်မရွေး ပြန်ကြည့်နိုင်ပါတယ်။', gradient: 'from-purple-500 to-pink-500' }
+                  { id: 1, icon: <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clipRule="evenodd"/></svg>, title: 'မြန်ဆန်သော ဆန်းစစ်မှု', desc: 'သင့်ရဲ့ ကျွမ်းကျင်မှုတွေကို မိနစ်ပိုင်းအတွင်းမှာပဲ AI က တိကျစွာ ခွဲခြမ်းစိတ်ဖြာပေးပါတယ်။', gradient: 'from-blue-500 to-cyan-500' },
+                  { id: 2, icon: <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M12 7a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0V8.414l-4.293 4.293a1 1 0 01-1.414 0L8 10.414l-4.293 4.293a1 1 0 01-1.414-1.414l5-5a1 1 0 011.414 0L11 10.586 14.586 7H12z" clipRule="evenodd"/></svg>, title: 'ပြည့်စုံသော လမ်းပြမြေပုံ', desc: 'သင်တက်လှမ်းလိုတဲ့ ရာထူးရောက်ဖို့ လိုအပ်တဲ့ အဆင့်တိုင်းကို သေချာဖော်ပြပေးပါတယ်။', gradient: 'from-emerald-500 to-teal-500' },
+                  { id: 3, icon: <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 20 20"><path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z"/></svg>, title: 'အချိန်မရွေး သိမ်းဆည်းနိုင်မှု', desc: 'သင့်ရဲ့ Career Guide ကို ဘရောက်ဇာထဲမှာပဲ အလွယ်တကူ သိမ်းဆည်းပြီး အချိန်မရွေး ပြန်ကြည့်နိုင်ပါတယ်။', gradient: 'from-purple-500 to-pink-500' }
                 ].map((feature) => (
                   <div key={feature.id} className="group relative">
                     <div className={`absolute -inset-0.5 bg-gradient-to-r ${feature.gradient} rounded-2xl blur-lg opacity-30 group-hover:opacity-50 transition-opacity duration-500`}></div>
@@ -212,7 +194,12 @@ const App: React.FC = () => {
             {/* Community section */}
             <div className="space-y-6">
               <div className="space-y-2">
-                <h5 className="font-black text-slate-900 uppercase tracking-widest text-xs md:text-sm border-l-4 border-indigo-500 pl-4 py-1">👥 Community</h5>
+                <h5 className="font-black text-slate-900 uppercase tracking-widest text-xs md:text-sm border-l-4 border-indigo-500 pl-4 py-1 flex items-center gap-2">
+                  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                  </svg>
+                  Community
+                </h5>
                 <div className="w-8 h-1 bg-gradient-to-r from-indigo-500 to-transparent rounded-full ml-4"></div>
               </div>
               <ul className="space-y-3.5 text-sm md:text-base">
@@ -259,7 +246,14 @@ const App: React.FC = () => {
           {/* Footer note */}
           <div className="mt-4 md:mt-6 pt-4 md:pt-6 border-t border-slate-200/50">
             <p className="text-center text-xs text-slate-500 font-medium leading-relaxed">
-              Made with <span className="text-red-500">❤️</span> for Myanmar youth who dare to dream big. Keep learning, keep growing! 💪
+              Made with
+              <svg className="w-4 h-4 inline mx-1 text-red-500" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clipRule="evenodd"/>
+              </svg>
+              for Myanmar youth who dare to dream big. Keep learning, keep growing!
+              <svg className="w-4 h-4 inline ml-1" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M12.395 2.553a1 1 0 00-1.45-.385c-.345.23-.614.558-.822.88-.214.33-.403.713-.57 1.116-.334.804-.614 1.768-.84 2.734a31.365 31.365 0 00-.613 3.58 2.64 2.64 0 01-.945-1.067c-.328-.68-.398-1.534-.398-2.654A1 1 0 005.05 6.05 6.981 6.981 0 003 11a7 7 0 1011.95-4.95c-.592-.591-.98-.985-1.348-1.467-.363-.476-.724-1.063-1.207-2.03zM12.12 15.12A3 3 0 017 13s.879.5 2.5.5c0-1 .5-4 1.25-4.5.5 1 .786 1.293 1.371 1.879A2.99 2.99 0 0113 13a2.99 2.99 0 01-.879 2.121z" clipRule="evenodd"/>
+              </svg>
             </p>
           </div>
         </div>

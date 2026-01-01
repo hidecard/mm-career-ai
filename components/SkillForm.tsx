@@ -1,132 +1,9 @@
 import React, { useState, useMemo } from 'react';
 
-interface JobTemplate {
-  id: string;
-  title: string;
-  skills: string[];
-  description: string;
-  salaryRange: string;
-}
-
 interface SkillFormProps {
   onSubmit: (skills: string, interests: string) => void;
   isLoading: boolean;
 }
-
-const TARGET_JOBS: JobTemplate[] = [
-  { 
-    id: 'backend', 
-    title: 'Junior Backend Developer (Laravel)', 
-    skills: ['PHP', 'Laravel', 'MySQL', 'REST API', 'Git', 'OOP', 'Docker', 'Postman', 'Authentication'],
-    description: 'Server-side logic နှင့် Database စီမံခန့်ခွဲမှုများကို လုပ်ဆောင်ရမည့် ရာထူးဖြစ်သည်။',
-    salaryRange: '၄ သိန်း - ၈ သိန်း (ကျပ်)'
-  },
-  { 
-    id: 'frontend', 
-    title: 'Frontend Developer (React)', 
-    skills: ['HTML', 'CSS', 'JavaScript', 'React', 'Tailwind CSS', 'Git', 'Redux', 'TypeScript', 'Responsive Design'],
-    description: 'အသုံးပြုသူများ မြင်တွေ့ရမည့် Website Interface များကို ဖန်တီးရမည့် ရာထူးဖြစ်သည်။',
-    salaryRange: '၄ သိန်း - ၁၀ သိန်း (ကျပ်)'
-  },
-  { 
-    id: 'fullstack', 
-    title: 'Full Stack Developer (MERN)', 
-    skills: ['MongoDB', 'Express.js', 'React', 'Node.js', 'JavaScript', 'REST API', 'Git', 'Deployment', 'JWT'],
-    description: 'Frontend နှင့် Backend နှစ်ဖက်စလုံးကို ကျွမ်းကျင်စွာ ကိုင်တွယ်နိုင်ရမည့် ရာထူးဖြစ်သည်။',
-    salaryRange: '၆ သိန်း - ၁၅ သိန်း (ကျပ်)'
-  },
-  { 
-    id: 'uiux', 
-    title: 'UI/UX Designer', 
-    skills: ['Figma', 'User Research', 'Prototyping', 'Wireframing', 'Adobe XD', 'Color Theory', 'Typography', 'User Testing'],
-    description: 'အသုံးပြုသူများအတွက် အဆင်ပြေချောမွေ့ပြီး လှပသော Design များကို ဖန်တီးရမည့် ရာထူးဖြစ်သည်။',
-    salaryRange: '၄ သိန်း - ၉ သိန်း (ကျပ်)'
-  },
-  { 
-    id: 'graphic', 
-    title: 'Graphic Designer', 
-    skills: ['Photoshop', 'Illustrator', 'Branding', 'Layout Design', 'Logo Design', 'Canva', 'Print Design', 'Visual Identity'],
-    description: 'ကုမ္ပဏီ၏ ကြော်ငြာနှင့် Branding ပိုင်းဆိုင်ရာ ရုပ်ပုံများကို ဖန်တီးရမည့် ရာထူးဖြစ်သည်။',
-    salaryRange: '၃ သိန်းခွဲ - ၇ သိန်း (ကျပ်)'
-  },
-  { 
-    id: 'data_analyst', 
-    title: 'Data Analyst', 
-    skills: ['Python', 'SQL', 'Excel (Advanced)', 'Power BI', 'Tableau', 'Statistics', 'Data Cleaning', 'Data Visualization'],
-    description: 'အချက်အလက်များကို ခွဲခြမ်းစိတ်ဖြာပြီး စီးပွားရေး ဆုံးဖြတ်ချက်များအတွက် ကူညီရမည့် ရာထူးဖြစ်သည်။',
-    salaryRange: '၅ သိန်း - ၁၂ သိန်း (ကျပ်)'
-  },
-  { 
-    id: 'digital_marketing', 
-    title: 'Digital Marketer', 
-    skills: ['SEO', 'Content Strategy', 'Facebook Ads', 'Google Analytics', 'Copywriting', 'Email Marketing', 'Social Media Management'],
-    description: 'Online မှတဆင့် ကုန်ပစ္စည်းနှင့် ဝန်ဆောင်မှုများကို ကြော်ငြာရမည့် ရာထူးဖြစ်သည်။',
-    salaryRange: '၃ သိန်းခွဲ - ၈ သိန်း (ကျပ်)'
-  },
-  { 
-    id: 'mobile', 
-    title: 'Mobile App Developer (Flutter)', 
-    skills: ['Dart', 'Flutter', 'Firebase', 'State Management', 'Mobile UI', 'REST API', 'Native Integration', 'App Deployment'],
-    description: 'Android နှင့် iOS နှစ်မျိုးလုံးတွင် အသုံးပြုနိုင်သော Application များ ဖန်တီးရမည့် ရာထူးဖြစ်သည်။',
-    salaryRange: '၅ သိန်း - ၁၂ သိန်း (ကျပ်)'
-  },
-  { 
-    id: 'project_manager', 
-    title: 'IT Project Manager', 
-    skills: ['Agile', 'Scrum', 'JIRA', 'Trello', 'Team Leadership', 'Budgeting', 'Risk Management', 'Stakeholder Management', 'Planning'],
-    description: 'ပရောဂျက်များကို အချိန်မီနှင့် စနစ်တကျ ပြီးမြောက်အောင် စီမံခန့်ခွဲရမည့် ရာထူးဖြစ်သည်။',
-    salaryRange: '၇ သိန်း - ၁၈ သိန်း (ကျပ်)'
-  },
-  { 
-    id: 'qa_engineer', 
-    title: 'QA / Software Tester', 
-    skills: ['Manual Testing', 'Automation Testing', 'Selenium', 'Bug Tracking', 'Test Cases', 'JIRA', 'Regression Testing', 'API Testing'],
-    description: 'Software များ၏ အရည်အသွေးကို စစ်ဆေးပြီး အမှားအယွင်းမရှိအောင် လုပ်ဆောင်ရမည့် ရာထူးဖြစ်သည်။',
-    salaryRange: '၄ သိန်း - ၉ သိန်း (ကျပ်)'
-  },
-  { 
-    id: 'hr_generalist', 
-    title: 'HR Generalist', 
-    skills: ['Recruitment', 'Employee Relations', 'Myanmar Labor Law', 'Payroll Management', 'Performance Review', 'Training', 'Communication'],
-    description: 'ဝန်ထမ်းရေးရာနှင့် ကုမ္ပဏီ၏ လူသားအရင်းအမြစ်များကို စီမံခန့်ခွဲရမည့် ရာထူးဖြစ်သည်။',
-    salaryRange: '၄ သိန်း - ၁၀ သိန်း (ကျပ်)'
-  },
-  { 
-    id: 'accountant', 
-    title: 'Accountant', 
-    skills: ['QuickBooks', 'Excel (Advanced)', 'Tally', 'Financial Reporting', 'Taxation', 'Auditing', 'Bookkeeping', 'Financial Analysis'],
-    description: 'ကုမ္ပဏီ၏ ငွေစာရင်းနှင့် ဘဏ္ဍာရေးဆိုင်ရာ ကိစ္စရပ်များကို တိကျစွာ မှတ်တမ်းတင်ရမည့် ရာထူးဖြစ်သည်။',
-    salaryRange: '၃ သိန်းခွဲ - ၉ သိန်း (ကျပ်)'
-  },
-  { 
-    id: 'content_writer', 
-    title: 'Content Writer / Copywriter', 
-    skills: ['SEO Writing', 'Creative Writing', 'Storytelling', 'Myanmar Grammar', 'Proofreading', 'English Translation', 'Research'],
-    description: 'ဆွဲဆောင်မှုရှိသော စာသားများနှင့် ဆောင်းပါးများကို ဖန်တီးရေးသားရမည့် ရာထူးဖြစ်သည်။',
-    salaryRange: '၃ သိန်း - ၇ သိန်း (ကျပ်)'
-  },
-  { 
-    id: 'sales_bd', 
-    title: 'Sales & Business Development', 
-    skills: ['Negotiation', 'CRM', 'Market Research', 'Lead Generation', 'Presentation', 'Strategic Planning', 'Customer Relationship'],
-    description: 'ကုမ္ပဏီ၏ အရောင်းမြှင့်တင်ရန်နှင့် စီးပွားရေးအခွင့်အလမ်းသစ်များ ရှာဖွေရန် ရာထူးဖြစ်သည်။',
-    salaryRange: '၃ သိန်းခွဲ - ၁၀ သိန်း + Commission'
-  },
-  { 
-    id: 'video_editor', 
-    title: 'Video Editor & Motion Designer', 
-    skills: ['Premiere Pro', 'After Effects', 'Color Grading', 'Sound Editing', 'Storyboarding', 'Motion Graphics', 'CapCut'],
-    description: 'အရည်အသွေးမြင့် ဗီဒီယိုများနှင့် Motion Design များကို ဖန်တီးရမည့် ရာထူးဖြစ်သည်။',
-    salaryRange: '၄ သိန်း - ၁၀ သိန်း (ကျပ်)'
-  },
-  { 
-    id: 'cybersecurity', 
-    title: 'Junior Cybersecurity Analyst', 
-    skills: ['Networking', 'Linux', 'Penetration Testing', 'Security Audit', 'Python', 'Firewall', 'Cryptographic Basics', 'Threat Analysis'],
-    description: 'စနစ်များ၏ လုံခြုံရေးကို စောင့်ကြည့်ပြီး တိုက်ခိုက်မှုများကို ကာကွယ်ရမည့် ရာထူးဖြစ်သည်။',
-    salaryRange: '၆ သိန်း - ၁၅ သိန်း (ကျပ်)'
-  }
-];
 
 const RELATED_SKILLS_MAP: Record<string, string[]> = {
   'html': ['CSS', 'JavaScript', 'Bootstrap', 'Tailwind CSS'],
@@ -155,7 +32,6 @@ const suggestedInterests = ["Web Development", "Artificial Intelligence", "E-com
 const SkillForm: React.FC<SkillFormProps> = ({ onSubmit, isLoading }) => {
   const [skills, setSkills] = useState('');
   const [interests, setInterests] = useState('');
-  const [targetJobId, setTargetJobId] = useState('');
   const [errors, setErrors] = useState<{ skills?: string; interests?: string }>({});
 
   const validate = () => {
@@ -202,22 +78,6 @@ const SkillForm: React.FC<SkillFormProps> = ({ onSubmit, isLoading }) => {
     return Array.from(suggestionsSet).slice(0, 8);
   }, [skills]);
 
-  const selectedJobData = useMemo(() => {
-    return TARGET_JOBS.find(j => j.id === targetJobId) || null;
-  }, [targetJobId]);
-
-  const gapAnalysis = useMemo(() => {
-    if (!selectedJobData) return null;
-
-    const userSkillList = skills.split(',').map(s => s.trim().toLowerCase()).filter(s => s !== "");
-    const matching = selectedJobData.skills.filter(s => userSkillList.some(us => us.includes(s.toLowerCase()) || s.toLowerCase().includes(us)));
-    const missing = selectedJobData.skills.filter(s => !userSkillList.some(us => us.includes(s.toLowerCase()) || s.toLowerCase().includes(us)));
-    
-    const readiness = Math.round((matching.length / selectedJobData.skills.length) * 100);
-
-    return { matching, missing, readiness, total: selectedJobData.skills.length };
-  }, [skills, selectedJobData]);
-
   return (
     <div className="w-full p-6 md:p-8 lg:p-10 bg-gradient-to-br from-white via-blue-50/30 to-white rounded-2xl md:rounded-3xl shadow-xl border border-white/60 backdrop-blur-sm animate-fade-in mb-8 md:mb-12 lg:mb-16 max-w-5xl mx-auto">
       <div className="mb-10 md:mb-12 text-center md:text-left">
@@ -228,7 +88,11 @@ const SkillForm: React.FC<SkillFormProps> = ({ onSubmit, isLoading }) => {
       <form onSubmit={handleSubmit} className="space-y-8 md:space-y-10">
         <div className="space-y-4">
           <label className={`block text-base md:text-lg font-black transition-colors ${errors.skills ? 'text-rose-600' : 'text-slate-900'}`}>
-            💼 လက်ရှိ တတ်မြောက်ထားသည့် စွမ်းရည်များ (Skills)
+            <svg className="w-5 h-5 inline mr-2" fill="currentColor" viewBox="0 0 20 20">
+              <path fillRule="evenodd" d="M6 6V5a3 3 0 013-3h2a3 3 0 013 3v1h2a2 2 0 012 2v3.57A22.952 22.952 0 0110 13a22.95 22.95 0 01-8-1.43V8a2 2 0 012-2h2zm2-1a1 1 0 011-1h2a1 1 0 011 1v1H8V5zm1 5a1 1 0 011-1h.01a1 1 0 110 2H10a1 1 0 01-1-1z" clipRule="evenodd"/>
+              <path d="M2 13.692V16a2 2 0 002 2h12a2 2 0 002-2v-2.308A24.974 24.974 0 0110 15c-2.796 0-5.487-.46-8-1.308z"/>
+            </svg>
+            လက်ရှိ တတ်မြောက်ထားသည့် စွမ်းရည်များ (Skills)
           </label>
           <div className="flex flex-wrap gap-2 mb-3">
             {suggestedSkills.map(s => (
@@ -252,7 +116,12 @@ const SkillForm: React.FC<SkillFormProps> = ({ onSubmit, isLoading }) => {
           
           {relatedSuggestions.length > 0 && (
             <div className="animate-fade-in space-y-3 p-4 md:p-5 bg-gradient-to-r from-blue-50 to-cyan-50 rounded-2xl border-2 border-blue-200/60 shadow-sm">
-              <p className="text-xs md:text-sm font-black text-blue-700 uppercase tracking-wider">✨ ဒါတွေကိုလည်း ထပ်ထည့်ကြည့်ပါ -</p>
+              <p className="text-xs md:text-sm font-black text-blue-700 uppercase tracking-wider flex items-center gap-2">
+                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                </svg>
+                ဒါတွေကိုလည်း ထပ်ထည့်ကြည့်ပါ -
+              </p>
               <div className="flex flex-wrap gap-2">
                 {relatedSuggestions.map(s => (
             <button
@@ -271,97 +140,9 @@ const SkillForm: React.FC<SkillFormProps> = ({ onSubmit, isLoading }) => {
           {errors.skills && <p className="text-rose-600 text-xs md:text-sm font-black flex items-center gap-2 mt-2">❌ {errors.skills}</p>}
         </div>
 
-        <div className="p-6 md:p-8 bg-gradient-to-br from-white to-slate-50/50 rounded-2xl md:rounded-3xl border-2 border-slate-300/40 space-y-6 shadow-md">
-          <div className="flex flex-col md:flex-row md:items-start justify-between gap-4 md:gap-6">
-            <div className="text-left">
-              <h3 className="text-lg md:text-xl font-black text-slate-900 mb-1">🎯 Skill Gap Analyzer</h3>
-              <p className="text-xs md:text-sm text-slate-600 font-medium">ရည်မှန်းထားတဲ့ အလုပ်နဲ့ သင့်အရည်အချင်းကို နှိုင်းယှဉ်ကြည့်ပါ</p>
-            </div>
-            <select
-              value={targetJobId}
-              onChange={(e) => setTargetJobId(e.target.value)}
-              className="w-full md:w-auto bg-white border-2 border-slate-300 rounded-xl px-4 md:px-5 py-2.5 md:py-3 text-sm md:text-base font-bold outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 shadow-md transition-all"
-            >
-              <option value="">ရည်မှန်းထားသော အလုပ်ကို ရွေးချယ်ပါ</option>
-              {TARGET_JOBS.map(job => (
-                <option key={job.id} value={job.id}>{job.title}</option>
-              ))}
-            </select>
-          </div>
-
-          {selectedJobData && gapAnalysis ? (
-            <div className="space-y-6 animate-fade-in">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="bg-gradient-to-br from-white to-blue-50/30 p-5 md:p-6 rounded-2xl border-2 border-blue-200/50 shadow-md">
-                  <p className="text-xs md:text-sm text-slate-600 uppercase font-black tracking-wider mb-2">📋 အလုပ်အကိုင် အနှစ်ချုပ်</p>
-                  <p className="text-sm md:text-base text-slate-800 leading-relaxed font-medium">{selectedJobData.description}</p>
-                </div>
-                <div className="bg-gradient-to-br from-white to-emerald-50/30 p-5 md:p-6 rounded-2xl border-2 border-emerald-200/50 shadow-md">
-                  <p className="text-xs md:text-sm text-slate-600 uppercase font-black tracking-wider mb-2">💰 ခန့်မှန်းလစာ</p>
-                  <p className="text-lg md:text-2xl font-black text-emerald-600">{selectedJobData.salaryRange}</p>
-                </div>
-              </div>
-
-              <div className="space-y-3">
-                <div className="flex justify-between items-end">
-                  <span className="text-xs md:text-sm font-black text-blue-700 uppercase tracking-wider">📊 Readiness Score</span>
-                  <span className="text-3xl md:text-4xl font-black bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">{gapAnalysis.readiness}%</span>
-                </div>
-                <div className="w-full bg-slate-300/50 h-3 md:h-4 rounded-full overflow-hidden shadow-inner border border-slate-200/50">
-                  <div
-                    className={`h-full transition-all duration-700 ease-out rounded-full ${gapAnalysis.readiness > 70 ? 'bg-gradient-to-r from-emerald-500 to-teal-500 shadow-lg shadow-emerald-500/30' : gapAnalysis.readiness > 40 ? 'bg-gradient-to-r from-amber-500 to-orange-500 shadow-lg shadow-amber-500/30' : 'bg-gradient-to-r from-rose-500 to-pink-500 shadow-lg shadow-rose-500/30'}`}
-                    style={{ width: `${gapAnalysis.readiness}%` }}
-                  ></div>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="space-y-4">
-                  <p className="text-sm md:text-base font-black text-emerald-700 uppercase tracking-wider flex items-center gap-2.5">
-                    <span className="w-3 h-3 rounded-full bg-gradient-to-r from-emerald-500 to-teal-500"></span>
-                    ✅ ပိုင်နိုင်သော စွမ်းရည်များ ({gapAnalysis.matching.length})
-                  </p>
-                  <div className="flex flex-wrap gap-2">
-                    {gapAnalysis.matching.length > 0 ? gapAnalysis.matching.map(s => (
-                      <span key={s} className="px-4 py-2.5 bg-gradient-to-r from-emerald-50 to-teal-50 text-emerald-700 text-xs md:text-sm font-bold rounded-xl flex items-center gap-2 border border-emerald-200/50 shadow-sm">
-                        <svg className="w-4 h-4 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7" /></svg>
-                        {s}
-                      </span>
-                    )) : <p className="text-sm text-slate-500 italic font-medium">ကိုက်ညီမှု မရှိသေးပါ</p>}
-                  </div>
-                </div>
-
-                <div className="space-y-4">
-                  <p className="text-sm md:text-base font-black text-rose-700 uppercase tracking-wider flex items-center gap-2.5">
-                    <span className="w-3 h-3 rounded-full bg-gradient-to-r from-rose-500 to-pink-500"></span>
-                    ⚠️ လိုအပ်နေသော စွမ်းရည်များ ({gapAnalysis.missing.length})
-                  </p>
-                  <div className="flex flex-wrap gap-2">
-                    {gapAnalysis.missing.length > 0 ? gapAnalysis.missing.map(s => (
-            <button
-              key={s}
-              type="button"
-              onClick={() => addTag('skills', s)}
-              className="px-5 py-3 bg-gradient-to-r from-rose-50 to-pink-50 text-rose-700 text-sm md:text-base font-bold rounded-xl flex items-center gap-2 hover:from-rose-100 hover:to-pink-100 transition-all duration-200 border border-rose-200/50 hover:border-rose-300/50 shadow-sm hover:shadow-md"
-            >
-              <svg className="w-4 h-4 text-rose-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 6v6m0 0v6m0-6h6m-6 0H6" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"></path></svg>
-              {s}
-            </button>
-                    )) : <p className="text-sm text-emerald-600 font-black">🎉 ဂုဏ်ယူပါတယ်! လိုအပ်ချက်များ ပြည့်စုံနေပါပြီ</p>}
-                  </div>
-                </div>
-              </div>
-            </div>
-          ) : (
-            <div className="py-8 text-center border-2 border-dashed border-slate-200 rounded-xl bg-white/50">
-              <p className="text-xs text-slate-400 font-medium">နှိုင်းယှဉ်ချက်ကြည့်ရန် အလုပ်အကိုင်တစ်ခုကို ရွေးချယ်ပါ</p>
-            </div>
-          )}
-        </div>
-
         <div className="space-y-4">
           <label className={`block text-base md:text-lg font-black transition-colors ${errors.interests ? 'text-rose-600' : 'text-slate-900'}`}>
-            🎨 သင် စိတ်ဝင်စားသည့် နယ်ပယ် သို့မဟုတ် ဝါသနာ
+            သင် စိတ်ဝင်စားသည့် နယ်ပယ် သို့မဟုတ် ဝါသနာ
           </label>
           <div className="flex flex-wrap gap-2 mb-3">
             {suggestedInterests.map(i => (
@@ -382,7 +163,12 @@ const SkillForm: React.FC<SkillFormProps> = ({ onSubmit, isLoading }) => {
             onChange={(e) => setInterests(e.target.value)}
             disabled={isLoading}
           />
-          {errors.interests && <p className="text-rose-600 text-xs md:text-sm font-black flex items-center gap-2 mt-2">❌ {errors.interests}</p>}
+          {errors.interests && <p className="text-rose-600 text-xs md:text-sm font-black flex items-center gap-2 mt-2">
+            <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+              <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd"/>
+            </svg>
+            {errors.interests}
+          </p>}
         </div>
 
         <button
@@ -395,7 +181,7 @@ const SkillForm: React.FC<SkillFormProps> = ({ onSubmit, isLoading }) => {
               <svg className="animate-spin h-6 w-6 text-white" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
               <span>AI က တွက်ချက်နေပါသည်...</span>
             </div>
-          ) : '✨ အနာဂတ် လမ်းညွှန်ချက် ရယူမယ်'}
+          ) : ' အနာဂတ် လမ်းညွှန်ချက် ရယူမယ်'}
         </button>
       </form>
     </div>
@@ -403,3 +189,4 @@ const SkillForm: React.FC<SkillFormProps> = ({ onSubmit, isLoading }) => {
 };
 
 export default SkillForm;
+
