@@ -24,18 +24,13 @@ const FAQ_DATA = [
   {
     question: "Career Mentor AI ကို ဘယ်လို အကျိုးရှိရှိ အသုံးချရမလဲ?",
     answer: "သင်နားမလည်သော နည်းပညာပိုင်းဆိုင်ရာ မေးခွန်းများ၊ အင်တာဗျူးအတွက် ပြင်ဆင်ပုံများ သို့မဟုတ် Roadmap ထဲက အဆင့်တစ်ခုခုမှာ အခက်အခဲရှိပါက Mentor AI ကို အသေးစိတ် မေးမြန်းနိုင်ပါသည်။ သူသည် သင့်အတွက် ၂၄ နာရီရှိနေမည့် ကိုယ်ပိုင်အကြံပေးတစ်ဦး ဖြစ်ပါသည်။"
-  },
-  {
-    question: "PDF Layout တွေရဲ့ ကွာခြားချက်က ဘာလဲ?",
-    answer: "'Detailed' သည် အချက်အလက်အားလုံး (Resources, Projects) ပါဝင်ပြီး၊ 'Compact' သည် အနှစ်ချုပ်ကိုသာ ဖော်ပြကာ၊ 'Minimalist' သည် အခြေခံအကျဆုံး Roadmap အဆင့်ဆင့်ကိုသာ သန့်ရှင်းစွာ ထုတ်ပေးပါသည်။"
   }
 ];
 
 const GuideResult: React.FC<GuideResultProps> = ({ guide, onReset }) => {
   const printRef = useRef<HTMLDivElement>(null);
   const chatEndRef = useRef<HTMLDivElement>(null);
-  const [isExporting, setIsExporting] = useState(false);
-  const [pdfLayout, setPdfLayout] = useState<'detailed' | 'compact' | 'minimalist'>('detailed');
+
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(null);
   
   const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
@@ -109,39 +104,7 @@ const GuideResult: React.FC<GuideResultProps> = ({ guide, onReset }) => {
     return (trimmed.startsWith('http://') || trimmed.startsWith('https://')) ? trimmed : `https://${trimmed}`;
   };
 
-  const triggerPDFExport = async () => {
-    const element = printRef.current;
-    if (!element || typeof (window as any).html2pdf === 'undefined') return;
-    
-    setIsExporting(true);
-    
-    const opt = {
-      margin: [10, 10, 10, 10],
-      filename: `MyanCareer_${pdfLayout}_${guide.jobTitle.replace(/\s+/g, '_')}.pdf`,
-      image: { type: 'jpeg', quality: 0.98 },
-      html2canvas: { 
-        scale: 2, 
-        useCORS: true, 
-        letterRendering: true,
-        windowWidth: 1200,
-        logging: false
-      },
-      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-      pagebreak: { 
-        mode: ['avoid-all', 'css'],
-        avoid: ['.roadmap-step', '.related-job-card', '.sub-grid-item']
-      }
-    };
 
-    try {
-      await (window as any).html2pdf().set(opt).from(element).save();
-    } catch (e) {
-      console.error("PDF Generation failed", e);
-      alert("PDF ထုတ်ယူ၍ မရနိုင်ပါ။ အင်တာနက် လိုင်းကို စစ်ဆေးပေးပါ။");
-    } finally {
-      setIsExporting(false);
-    }
-  };
 
   return (
     <div className="w-full space-y-8 md:space-y-10 pb-16 md:pb-20 animate-fade-in px-4 sm:px-6 lg:px-8 relative">
@@ -165,46 +128,11 @@ const GuideResult: React.FC<GuideResultProps> = ({ guide, onReset }) => {
               <span className="hidden sm:inline">Mentor AI</span>
               <span className="sm:hidden">AI Chat</span>
             </button>
-            <button
-              onClick={triggerPDFExport}
-              disabled={isExporting}
-              className="flex items-center justify-center gap-2 px-4 py-2.5 bg-blue-600 text-white rounded-xl hover:bg-blue-700 shadow-md font-black text-sm transition-all active:scale-95 disabled:opacity-70"
-            >
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5"></path></svg>
-              <span className="hidden sm:inline">{isExporting ? 'ထုတ်ယူနေသည်...' : 'PDF ဒေါင်းလုဒ်'}</span>
-              <span className="sm:hidden">{isExporting ? 'Exporting...' : 'PDF'}</span>
-            </button>
+
           </div>
         </div>
 
-        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 pt-4 border-t border-slate-100">
-          <span className="text-[11px] font-black text-slate-400 uppercase tracking-widest shrink-0">PDF Layout ရွေးချယ်ရန်:</span>
-          <div className="flex flex-wrap gap-2">
-            {[
-              { id: 'detailed', label: 'အသေးစိတ် (Detailed)' },
-              { id: 'compact', label: 'အနှစ်ချုပ် (Compact)' },
-              { id: 'minimalist', label: 'အခြေခံ (Minimalist)' }
-            ].map((layout) => (
-              <label key={layout.id} className="flex items-center gap-2 cursor-pointer group">
-                <input
-                  type="radio"
-                  name="pdfLayout"
-                  value={layout.id}
-                  checked={pdfLayout === layout.id}
-                  onChange={() => setPdfLayout(layout.id as any)}
-                  className="hidden"
-                />
-                <div className={`px-3 py-2 rounded-lg border text-[11px] font-bold transition-all ${
-                  pdfLayout === layout.id
-                  ? 'bg-blue-600 border-blue-600 text-white shadow-sm'
-                  : 'bg-white border-slate-200 text-slate-600 hover:border-blue-300'
-                }`}>
-                  {layout.label}
-                </div>
-              </label>
-            ))}
-          </div>
-        </div>
+
       </div>
 
       {/* MAIN EXPORTABLE AREA */}
@@ -304,7 +232,7 @@ const GuideResult: React.FC<GuideResultProps> = ({ guide, onReset }) => {
         </div>
 
         {/* Essential Info Bar */}
-        <div className={`grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-slate-100 border-b border-slate-100 print:divide-x print:grid-cols-3 ${pdfLayout === 'minimalist' ? 'print:hidden' : ''}`}>
+        <div className="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-slate-100 border-b border-slate-100 print:divide-x print:grid-cols-3">
           <div className="p-8 md:p-10 sub-grid-item">
             <h4 className="text-[11px] font-black text-slate-400 uppercase tracking-widest mb-5">Soft Skills</h4>
             <div className="flex flex-wrap gap-2">
@@ -356,7 +284,7 @@ const GuideResult: React.FC<GuideResultProps> = ({ guide, onReset }) => {
 
                 <p className="text-slate-700 text-sm md:text-base leading-relaxed mb-6 md:mb-8 font-medium print:text-sm print:mb-6">{step.description}</p>
 
-                <div className={`grid lg:grid-cols-2 gap-6 md:gap-8 pt-6 md:pt-8 border-t border-slate-100 print:grid-cols-2 print:gap-10 ${(pdfLayout === 'compact' || pdfLayout === 'minimalist') ? 'print:hidden' : ''}`}>
+                <div className="grid lg:grid-cols-2 gap-6 md:gap-8 pt-6 md:pt-8 border-t border-slate-100 print:grid-cols-2 print:gap-10">
                   <div className="space-y-10 sub-grid-item">
                     <div className="space-y-4">
                        <h5 className="text-[11px] font-black text-slate-400 uppercase tracking-widest">စွမ်းရည်နှင့် ကိရိယာများ</h5>
@@ -390,20 +318,13 @@ const GuideResult: React.FC<GuideResultProps> = ({ guide, onReset }) => {
                   </div>
                 </div>
 
-                <div className={`hidden ${pdfLayout === 'compact' ? 'print:block' : ''} pt-6 border-t border-slate-100`}>
-                   <h5 className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-3">Key Skills</h5>
-                   <div className="flex flex-wrap gap-2">
-                     {step.skillsToAcquire.concat(step.toolsToMaster).slice(0, 8).map((item, idx) => (
-                       <span key={idx} className="text-[10px] font-bold text-slate-600 bg-slate-50 px-3 py-1.5 rounded-lg border border-slate-100">{item}</span>
-                     ))}
-                   </div>
-                </div>
+
               </div>
             ))}
           </div>
 
           {/* RELATED JOBS SECTION */}
-          <div className={`space-y-8 pt-10 border-t border-slate-100 ${(pdfLayout === 'minimalist') ? 'print:hidden' : ''}`}>
+          <div className="space-y-8 pt-10 border-t border-slate-100">
             <div className="space-y-2">
               <h3 className="text-2xl md:text-3xl font-black text-slate-900 tracking-tight">ဆက်စပ်အလုပ်အကိုင်များ (Related Jobs)</h3>
               <p className="text-slate-500 font-bold text-sm">သင့်အရည်အချင်းနှင့် ကိုက်ညီနိုင်သော အခြားအခွင့်အလမ်းများ</p>
@@ -425,7 +346,7 @@ const GuideResult: React.FC<GuideResultProps> = ({ guide, onReset }) => {
 
           {/* JOB SEARCH RESULTS SECTION */}
           {jobSearchResults.length > 0 && (
-            <div className={`space-y-10 pt-12 border-t border-slate-100 ${(pdfLayout === 'minimalist') ? 'print:hidden' : ''}`}>
+            <div className="space-y-10 pt-12 border-t border-slate-100">
               <div className="space-y-2">
                 <h3 className="text-2xl md:text-3xl font-black text-slate-900 tracking-tight">ရှာဖွေထားသော အလုပ်အကိုင်များ (Found Jobs)</h3>
                 <p className="text-slate-500 font-bold text-sm">မြန်မာနိုင်ငံတွင် သင့်အလုပ်နှင့် ဆက်စပ်သော အခွင့်အလမ်းများ</p>
@@ -459,7 +380,7 @@ const GuideResult: React.FC<GuideResultProps> = ({ guide, onReset }) => {
             </div>
           )}
 
-          <div className={`roadmap-step bg-slate-900 rounded-[3rem] p-10 md:p-16 text-white relative overflow-hidden shadow-2xl print:bg-slate-900 print:p-12 print:mt-10 ${pdfLayout === 'minimalist' ? 'print:hidden' : ''}`}>
+          <div className="roadmap-step bg-slate-900 rounded-[3rem] p-10 md:p-16 text-white relative overflow-hidden shadow-2xl print:bg-slate-900 print:p-12 print:mt-10">
             <div className="absolute top-0 right-0 w-80 h-80 bg-blue-600/10 blur-[100px] rounded-full"></div>
             <h4 className="text-2xl md:text-4xl font-black mb-10 flex items-center gap-5 relative z-10">
               <span className="p-4 bg-blue-600 rounded-2xl shadow-lg shadow-blue-500/20">
@@ -523,7 +444,7 @@ const GuideResult: React.FC<GuideResultProps> = ({ guide, onReset }) => {
       </div>
 
       {/* Floating Chat Widget */}
-      <div className="no-print fixed bottom-6 right-6 z-[100] flex flex-col items-end">
+      <div className="no-print fixed bottom-8 right-6 z-[100] flex flex-col items-end">
         {isChatOpen && (
           <div className="mb-4 w-full sm:w-[400px] h-[600px] bg-white shadow-[0_20px_60px_rgba(0,0,0,0.2)] rounded-[2.5rem] border border-slate-200 flex flex-col animate-slide-up overflow-hidden ring-1 ring-slate-100">
             <div className="p-6 bg-blue-600 text-white flex justify-between items-center">
