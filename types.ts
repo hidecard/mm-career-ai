@@ -161,3 +161,42 @@ export interface LearningResource {
   rating: number;
   matchScore: number;
 }
+
+export interface SkillGap {
+  skill: string;
+  priority: 'Essential' | 'Recommended' | 'Nice-to-have';
+  currentLevel: 'None' | 'Beginner' | 'Intermediate' | 'Advanced';
+  targetLevel: 'Beginner' | 'Intermediate' | 'Advanced';
+  gapDescription: string;
+  prerequisites?: string[];
+  resources: LearningResource[];
+  estimatedTimeToLearn: string;
+  matchScore: number;
+  level?: 'Beginner' | 'Intermediate' | 'Advanced';
+  order?: number;
+}
+
+export interface LearningMilestone {
+  id: string;
+  title: string;
+  description: string;
+  skills: string[];
+  resources: LearningResource[];
+  duration: string;
+  order: number;
+  completed: boolean;
+  completedAt?: string;
+}
+
+export interface LearningPath {
+  id: string;
+  jobTitle: string;
+  currentSkills: string[];
+  targetSkills: string[];
+  skillGaps: SkillGap[];
+  milestones: LearningMilestone[];
+  totalEstimatedTime: string;
+  progressPercentage: number;
+  startedAt?: string;
+  completedAt?: string;
+}

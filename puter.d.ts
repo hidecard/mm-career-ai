@@ -2,9 +2,7 @@
 // See: https://docs.puter.com/
 
 declare global {
-  interface Window {
-    puter: PuterInstance;
-  }
+  const puter: PuterInstance;
 }
 
 interface PuterAIChatOptions {

@@ -13,7 +13,8 @@ const Navbar: React.FC<NavbarProps> = ({ onNav, currentPage }) => {
     { id: 'assessment', label: 'ဆန်းစစ်ချက်' },
     { id: 'trends', label: 'အလုပ်အကိုင်ရေစီးကြောင်း' },
     { id: 'resume-builder', label: 'Resume Builder' },
-    { id: 'interview-prep', label: 'Interview Prep' }
+    { id: 'interview-prep', label: 'Interview Prep' },
+    { id: 'learning-roadmap', label: 'Learning Roadmap' }
   ];
 
   const handleNavClick = (id: string) => {

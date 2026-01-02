@@ -6,6 +6,7 @@ import GuideResult from './components/GuideResult';
 import TrendChart from './components/TrendChart';
 import ResumeBuilder from './components/ResumeBuilder';
 import InterviewPrep from './components/InterviewPrep';
+import LearningRoadmap from './pages/LearningRoadmap';
 import { generateCareerGuide } from './services/geminiService';
 import { CareerGuide } from './types';
 
@@ -71,8 +72,6 @@ const App: React.FC = () => {
             <section id="trends" className="animate-fade-in scroll-mt-16">
               <TrendChart />
             </section>
-            
-          
           </div>
         )}
 
@@ -139,13 +138,35 @@ const App: React.FC = () => {
             )}
           </div>
         )}
+
+        {currentPage === 'learning-roadmap' && (
+          <div className="animate-fade-in w-full px-4 sm:px-6 lg:px-8">
+            {guide ? (
+              <LearningRoadmap guide={guide} />
+            ) : (
+              <div className="flex items-center justify-center min-h-[400px]">
+                <div className="text-center">
+                  <div className="w-16 h-16 mx-auto mb-4 bg-blue-100 rounded-full flex items-center justify-center">
+                    <span className="text-3xl">📚</span>
+                  </div>
+                  <h3 className="text-xl font-bold text-slate-700 mb-2">ပထမဦးစွာ အလုပ်လမ်းညွှန်ချက် ရယူပါ</h3>
+                  <p className="text-slate-500">Learning Roadmap ကို အသုံးပြုရန် အရင်းအမြစ်များ လိုအပ်ပါသည်။</p>
+                  <button
+                    onClick={() => handleNav('assessment')}
+                    className="mt-4 px-6 py-3 bg-blue-600 text-white rounded-xl font-bold hover:bg-blue-700 transition-colors"
+                  >
+                    အခုပဲ စစ်ဆေးကြည့်မယ်
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+        )}
       </main>
 
       <footer className="bg-white border-t border-slate-200 w-full no-print mt-2 md:mt-4 text-slate-900">
         <div className="w-full px-4 sm:px-6 lg:px-8 py-6 md:py-8">
-          {/* Main footer grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 mt-4 gap-6 md:gap-8 mb-6 md:mb-8">
-            {/* Brand section */}
             <div className="lg:col-span-2 space-y-4">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 md:w-12 md:h-12 bg-gradient-to-br from-blue-600 to-blue-700 rounded-xl md:rounded-2xl flex items-center justify-center text-white font-black text-lg md:text-xl shadow-lg shadow-blue-500/30 transform hover:scale-110 transition-transform duration-300">M</div>
@@ -159,7 +180,6 @@ const App: React.FC = () => {
                 မြန်မာလူငယ်များအတွက် နည်းပညာနှင့် အသက်မွေးဝမ်းကျောင်းဆိုင်ရာ လမ်းပြမြေပုံများကို AI စနစ်သုံး၍ အခမဲ့ ဖန်တီးပေးနေသော Platform ဖြစ်ပါသည်။
               </p>
 
-              {/* Social icons */}
               <div className="flex items-center gap-3 pt-3">
                 <span className="text-xs md:text-sm font-black text-slate-700 uppercase tracking-wider">Follow Us:</span>
                 <div className="flex gap-2">
@@ -176,7 +196,6 @@ const App: React.FC = () => {
               </div>
             </div>
 
-            {/* Quick Links section */}
             <div className="space-y-4">
               <div className="space-y-2">
                 <h5 className="font-black text-slate-900 uppercase tracking-widest text-xs md:text-sm border-l-4 border-blue-500 pl-4 py-1">Quick Links</h5>
@@ -204,7 +223,6 @@ const App: React.FC = () => {
               </ul>
             </div>
 
-            {/* Community section */}
             <div className="space-y-4">
               <div className="space-y-2">
                 <h5 className="font-black text-slate-900 uppercase tracking-widest text-xs md:text-sm border-l-4 border-indigo-500 pl-4 py-1 flex items-center gap-2">
@@ -238,10 +256,8 @@ const App: React.FC = () => {
             </div>
           </div>
 
-          {/* Divider */}
           <div className="h-px bg-gradient-to-r from-slate-200 via-slate-300 to-slate-200 my-4 md:my-6"></div>
 
-          {/* Bottom copyright section */}
           <div className="flex flex-col sm:flex-row justify-between items-center gap-3 text-center sm:text-left">
             <p className="text-xs md:text-sm text-slate-600 font-medium">
               <span className="block sm:inline">© ၂၀၂၅ MyanCareer AI</span>
@@ -255,7 +271,6 @@ const App: React.FC = () => {
             </div>
           </div>
 
-          {/* Footer note */}
           <div className="mt-4 pt-4 border-t border-slate-200/50">
             <p className="text-center text-xs text-slate-500">
               Made with 
@@ -272,3 +287,4 @@ const App: React.FC = () => {
 };
 
 export default App;
+
