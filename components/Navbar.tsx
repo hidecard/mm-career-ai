@@ -1,56 +1,51 @@
 import React, { useState } from 'react';
+import { Link, NavLink } from 'react-router-dom';
 
-interface NavbarProps {
-  onNav: (page: string) => void;
-  currentPage: string;
-}
-
-const Navbar: React.FC<NavbarProps> = ({ onNav, currentPage }) => {
+const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
-  
-  const navItems = [
-    { id: 'home', label: 'ပင်မစာမျက်နှာ' },
-    { id: 'assessment', label: 'ဆန်းစစ်ချက်' },
-    { id: 'resume-builder', label: 'Resume Builder' },
-    { id: 'interview-prep', label: 'Interview Prep' },
-    { id: 'learning-roadmap', label: 'Learning Roadmap' },
-    { id: 'support', label: 'ပံ့ပိုးမှု' }
-  ];
 
-  const handleNavClick = (id: string) => {
-    onNav(id);
-    setIsOpen(false);
-  };
+  const navItems = [
+    { id: 'home', label: 'ပင်မစာမျက်နှာ', path: '/' },
+    { id: 'assessment', label: 'ဆန်းစစ်ချက်', path: '/assessment' },
+    { id: 'resume-builder', label: 'Resume Builder', path: '/resume-builder' },
+    { id: 'interview-prep', label: 'Interview Prep', path: '/interview-prep' },
+    { id: 'learning-roadmap', label: 'Learning Roadmap', path: '/learning-roadmap' },
+    { id: 'support', label: 'ပံ့ပိုးမှု', path: '/support' }
+  ];
 
   return (
     <nav className="sticky top-0 z-50 bg-white/90 backdrop-blur-xl border-b border-slate-200/50 shadow-md no-print transition-all duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16 md:h-18">
-          <div className="flex items-center gap-3 cursor-pointer shrink-0" onClick={() => handleNavClick('home')} role="button" tabIndex={0}>
+          <Link to="/" className="flex items-center gap-3 cursor-pointer shrink-0">
             <div className="w-9 h-9 md:w-10 md:h-10 bg-gradient-to-br from-blue-600 to-blue-700 rounded-xl md:rounded-xl flex items-center justify-center shadow-lg shadow-blue-500/30 transform transition-transform hover:scale-110">
               <span className="text-white font-black text-base md:text-lg">M</span>
             </div>
             <span className="text-lg md:text-xl font-black bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600 bg-clip-text text-transparent hidden sm:block">
               MyanCareer AI
             </span>
-          </div>
+          </Link>
 
           <div className="hidden md:flex items-center gap-1">
             {navItems.map((item) => (
-              <button
+              <NavLink
                 key={item.id}
-                onClick={() => handleNavClick(item.id)}
-                className={`whitespace-nowrap text-xs font-bold transition-all duration-300 relative py-1.5 px-2.5 rounded-lg ${
-                  currentPage === item.id
+                to={item.path}
+                className={({ isActive }) => `whitespace-nowrap text-xs font-bold transition-all duration-300 relative py-1.5 px-2.5 rounded-lg ${
+                  isActive
                   ? 'text-blue-600 bg-blue-50/80 border border-blue-200/50 shadow-sm'
                   : 'text-slate-700 hover:text-blue-600 hover:bg-slate-50/60'
                 }`}
               >
-                {item.label}
-                {currentPage === item.id && (
-                  <span className="absolute bottom-0 left-2 right-2 h-0.5 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-t"></span>
+                {({ isActive }) => (
+                  <>
+                    {item.label}
+                    {isActive && (
+                      <span className="absolute bottom-0 left-2 right-2 h-0.5 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-t"></span>
+                    )}
+                  </>
                 )}
-              </button>
+              </NavLink>
             ))}
           </div>
 
@@ -77,17 +72,18 @@ const Navbar: React.FC<NavbarProps> = ({ onNav, currentPage }) => {
         <div className="md:hidden bg-white/95 backdrop-blur-xl border-t border-slate-100/50 animate-fade-in shadow-xl">
           <div className="px-4 py-4 space-y-2">
             {navItems.map((item) => (
-              <button
+              <NavLink
                 key={item.id}
-                onClick={() => handleNavClick(item.id)}
-                className={`block w-full text-left px-4 py-3 rounded-xl text-base font-bold transition-all duration-300 ${
-                  currentPage === item.id
+                to={item.path}
+                onClick={() => setIsOpen(false)}
+                className={({ isActive }) => `block w-full text-left px-4 py-3 rounded-xl text-base font-bold transition-all duration-300 ${
+                  isActive
                   ? 'bg-blue-50/80 text-blue-600 border border-blue-200/50 shadow-md'
                   : 'text-slate-700 hover:bg-slate-50/60'
                 }`}
               >
                 {item.label}
-              </button>
+              </NavLink>
             ))}
           </div>
         </div>

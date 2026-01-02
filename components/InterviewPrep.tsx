@@ -7,18 +7,48 @@ interface InterviewPrepProps {
 }
 
 const InterviewPrep: React.FC<InterviewPrepProps> = ({ careerGuide }) => {
-  const [questions, setQuestions] = useState<InterviewQuestion[]>([]);
+  const [questions, setQuestions] = useState<InterviewQuestion[]>(() => {
+    const saved = localStorage.getItem('myancareer_interview_questions');
+    if (saved) {
+      try {
+        return JSON.parse(saved);
+      } catch (e) {
+        localStorage.removeItem('myancareer_interview_questions');
+      }
+    }
+    return [];
+  });
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [userAnswer, setUserAnswer] = useState('');
-  const [answers, setAnswers] = useState<InterviewAnswer[]>([]);
+  const [answers, setAnswers] = useState<InterviewAnswer[]>(() => {
+    const saved = localStorage.getItem('myancareer_interview_answers');
+    if (saved) {
+      try {
+        return JSON.parse(saved);
+      } catch (e) {
+        localStorage.removeItem('myancareer_interview_answers');
+      }
+    }
+    return [];
+  });
   const [showResult, setShowResult] = useState(false);
   const [loading, setLoading] = useState(false);
   const [loadingQuestions, setLoadingQuestions] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
 
   useEffect(() => {
-    loadQuestions();
+    if (questions.length === 0) {
+      loadQuestions();
+    }
   }, [careerGuide]);
+
+  useEffect(() => {
+    localStorage.setItem('myancareer_interview_questions', JSON.stringify(questions));
+  }, [questions]);
+
+  useEffect(() => {
+    localStorage.setItem('myancareer_interview_answers', JSON.stringify(answers));
+  }, [answers]);
 
   const loadQuestions = async () => {
     setLoadingQuestions(true);

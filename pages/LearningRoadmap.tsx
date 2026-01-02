@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { CareerGuide, LearningPath, SkillGap, LearningMilestone, LearningResource } from '../types';
 import { generateLearningPath as generateLearningPathAI } from '../services/geminiService';
 
@@ -8,8 +8,24 @@ interface LearningRoadmapProps {
 
 const LearningRoadmap: React.FC<LearningRoadmapProps> = ({ guide }) => {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
-  const [learningPath, setLearningPath] = useState<LearningPath | null>(null);
+  const [learningPath, setLearningPath] = useState<LearningPath | null>(() => {
+    const saved = localStorage.getItem('myancareer_learning_path');
+    if (saved) {
+      try {
+        return JSON.parse(saved);
+      } catch (e) {
+        localStorage.removeItem('myancareer_learning_path');
+      }
+    }
+    return null;
+  });
   const [activeTab, setActiveTab] = useState<'overview' | 'milestones' | 'resources'>('overview');
+
+  useEffect(() => {
+    if (learningPath) {
+      localStorage.setItem('myancareer_learning_path', JSON.stringify(learningPath));
+    }
+  }, [learningPath]);
 
   const handleGenerateLearningPath = async () => {
     setIsAnalyzing(true);

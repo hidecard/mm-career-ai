@@ -11,23 +11,33 @@ interface ResumeBuilderProps {
 }
 
 const ResumeBuilder: React.FC<ResumeBuilderProps> = ({ careerGuide, userSkills, userInterests }) => {
-  const [resume, setResume] = useState<Resume>({
-    id: Math.random().toString(36).substring(2, 11),
-    personalInfo: {
-      fullName: '',
-      email: '',
-      phone: '',
-      location: '',
-    },
-    summary: '',
-    experience: [],
-    education: [],
-    skills: [],
-    certifications: [],
-    projects: [],
-    languages: [],
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
+  const [resume, setResume] = useState<Resume>(() => {
+    const saved = localStorage.getItem('myancareer_resume');
+    if (saved) {
+      try {
+        return JSON.parse(saved);
+      } catch (e) {
+        localStorage.removeItem('myancareer_resume');
+      }
+    }
+    return {
+      id: Math.random().toString(36).substring(2, 11),
+      personalInfo: {
+        fullName: '',
+        email: '',
+        phone: '',
+        location: '',
+      },
+      summary: '',
+      experience: [],
+      education: [],
+      skills: [],
+      certifications: [],
+      projects: [],
+      languages: [],
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    };
   });
 
   const [suggestions, setSuggestions] = useState<{
@@ -49,6 +59,10 @@ const ResumeBuilder: React.FC<ResumeBuilderProps> = ({ careerGuide, userSkills, 
     loadJobs();
     loadLearningResources();
   }, [careerGuide]);
+
+  useEffect(() => {
+    localStorage.setItem('myancareer_resume', JSON.stringify(resume));
+  }, [resume]);
 
   const loadSuggestions = async () => {
     setLoadingSuggestions(true);

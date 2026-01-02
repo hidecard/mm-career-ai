@@ -1,10 +1,7 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
-interface HeroProps {
-  onStart: () => void;
-}
-
-const Hero: React.FC<HeroProps> = ({ onStart }) => {
+const Hero: React.FC = () => {
   return (
     <div className="relative overflow-hidden bg-gradient-to-br from-white via-blue-50/40 to-white w-full pt-8 md:pt-12 lg:pt-16 pb-12 md:pb-16 lg:pb-20">
       {/* Premium background decoration with multiple layers */}
@@ -34,13 +31,13 @@ const Hero: React.FC<HeroProps> = ({ onStart }) => {
           </p>
 
           <div className="mt-8 md:mt-10 flex flex-col sm:flex-row items-center justify-center gap-4 px-2">
-            <button
-              onClick={onStart}
-              className="w-full sm:w-auto px-8 md:px-10 py-3.5 md:py-4 bg-gradient-to-r from-blue-600 to-blue-700 rounded-xl md:rounded-2xl font-black text-white text-base md:text-lg shadow-lg shadow-blue-500/30 hover:shadow-xl hover:shadow-blue-500/40 transition-all duration-300 transform hover:scale-[1.03] active:scale-95"
+            <Link
+              to="/assessment"
+              className="w-full sm:w-auto px-8 md:px-10 py-3.5 md:py-4 bg-gradient-to-r from-blue-600 to-blue-700 rounded-xl md:rounded-2xl font-black text-white text-base md:text-lg shadow-lg shadow-blue-500/30 hover:shadow-xl hover:shadow-blue-500/40 transition-all duration-300 transform hover:scale-[1.03] active:scale-95 inline-block text-center"
             >
               အခုပဲ စစ်ဆေးကြည့်မယ်
-            </button>
-          
+            </Link>
+
           </div>
         </div>
 
