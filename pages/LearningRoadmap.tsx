@@ -133,7 +133,7 @@ const LearningRoadmap: React.FC<LearningRoadmapProps> = ({ guide }) => {
                 }`}
               >
                 {tab === 'overview' && 'အပြည့်အစုံ'}
-                {tab === 'milestones' && 'ကျင်းပန်းတိုင်များ'}
+                {tab === 'milestones' && 'ပန်းတိုင်များ'}
                 {tab === 'resources' && 'အရင်းအမြစ်များ'}
               </button>
             ))}
