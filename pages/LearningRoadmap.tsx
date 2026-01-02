@@ -7,35 +7,14 @@ interface LearningRoadmapProps {
 }
 
 const LearningRoadmap: React.FC<LearningRoadmapProps> = ({ guide }) => {
-  const [currentSkills, setCurrentSkills] = useState<string[]>([]);
-  const [newSkill, setNewSkill] = useState('');
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [learningPath, setLearningPath] = useState<LearningPath | null>(null);
   const [activeTab, setActiveTab] = useState<'overview' | 'milestones' | 'resources'>('overview');
 
-  const handleAddSkill = () => {
-    if (newSkill.trim() && !currentSkills.includes(newSkill.trim())) {
-      setCurrentSkills([...currentSkills, newSkill.trim()]);
-      setNewSkill('');
-    }
-  };
-
-  const handleRemoveSkill = (skill: string) => {
-    setCurrentSkills(currentSkills.filter(s => s !== skill));
-  };
-
-  const handleKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter') handleAddSkill();
-  };
-
   const handleGenerateLearningPath = async () => {
-    if (currentSkills.length === 0) {
-      alert('လက်ရှိ ကျွမ်းကျင်မှုများကို ထည့်သွင်းပေးပါ။');
-      return;
-    }
     setIsAnalyzing(true);
     try {
-      const path = await generateLearningPathAI(guide, currentSkills);
+      const path = await generateLearningPathAI(guide, []);
       setLearningPath(path);
     } catch (error) {
       console.error('Error generating learning path:', error);
@@ -109,7 +88,7 @@ const LearningRoadmap: React.FC<LearningRoadmapProps> = ({ guide }) => {
         )}
       </div>
 
-      {/* Skills Input Section */}
+      {/* Generate Learning Path Section */}
       {!learningPath && (
         <div className="bg-white rounded-2xl shadow-xl p-4 sm:p-6 md:p-8">
           <div className="flex items-center gap-3 mb-4 sm:mb-6">
@@ -119,48 +98,16 @@ const LearningRoadmap: React.FC<LearningRoadmapProps> = ({ guide }) => {
               </svg>
             </div>
             <div>
-              <h2 className="text-xl sm:text-2xl font-bold text-slate-900">သင့်ရဲ့ လက်ရှိ ကျွမ်းကျင်မှုများ</h2>
-              <p className="text-slate-600 text-sm sm:text-base">သင်သိထားပြီးသော ကျွမ်းကျင်မှုများကို ထည့်သွင်းပါ။</p>
+              <h2 className="text-xl sm:text-2xl font-bold text-slate-900">AI သင်ယူမှုလမ်းပြမြေပုံ</h2>
+              <p className="text-slate-600 text-sm sm:text-base">AI က သင့်အတွက် စိတ်ကြိုက် သင်ယူမှုလမ်းပြမြေပုံ ဖန်တီးပေးပါလိမ့်မည်။</p>
             </div>
           </div>
-
-          <div className="flex flex-col sm:flex-row gap-2 mb-4">
-            <input
-              type="text"
-              value={newSkill}
-              onChange={(e) => setNewSkill(e.target.value)}
-              onKeyPress={handleKeyPress}
-              placeholder="ကျွမ်းကျင်မှုအသစ် ထည့်သွင်းပါ..."
-              className="flex-1 px-3 py-2.5 sm:px-4 sm:py-3 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent text-sm sm:text-base"
-            />
-            <button
-              onClick={handleAddSkill}
-              className="px-4 py-2.5 sm:px-6 sm:py-3 bg-green-600 text-white font-bold rounded-xl hover:bg-green-700 transition-colors text-sm sm:text-base whitespace-nowrap"
-            >
-              ထည့်သွင်းပါ
-            </button>
-          </div>
-
-          {currentSkills.length > 0 && (
-            <div className="flex flex-wrap gap-2 mb-6">
-              {currentSkills.map((skill) => (
-                <span key={skill} className="inline-flex items-center gap-1.5 px-2.5 py-1.5 sm:px-3 sm:py-2 bg-green-50 text-green-700 rounded-full font-medium text-xs sm:text-sm max-w-full">
-                  <span className="truncate max-w-[120px] sm:max-w-none">{skill}</span>
-                  <button onClick={() => handleRemoveSkill(skill)} className="hover:text-green-900 flex-shrink-0 ml-1">
-                    <svg className="w-3 h-3 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                    </svg>
-                  </button>
-                </span>
-              ))}
-            </div>
-          )}
 
           <button
             onClick={handleGenerateLearningPath}
-            disabled={isAnalyzing || currentSkills.length === 0}
+            disabled={isAnalyzing}
             className={`w-full py-3 sm:py-4 rounded-xl font-black text-base sm:text-lg transition-all ${
-              isAnalyzing || currentSkills.length === 0
+              isAnalyzing
                 ? 'bg-slate-200 text-slate-500 cursor-not-allowed'
                 : 'bg-gradient-to-r from-green-600 to-emerald-600 text-white hover:shadow-lg hover:shadow-green-500/30'
             }`}
