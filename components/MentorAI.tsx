@@ -42,7 +42,7 @@ const MentorAI: React.FC = () => {
                   <path d="M13 10V3L4 14h7v7l9-11h-7z" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"></path>
                 </svg>
               </div>
-              <p className="font-bold">Career Mentor AI</p>
+              <p className="font-bold">MyanCareer AI </p>
             </div>
             <button onClick={() => setIsChatOpen(false)} className="p-2 hover:bg-white/20 rounded-full">
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -53,7 +53,7 @@ const MentorAI: React.FC = () => {
           <div className="flex-1 overflow-y-auto p-4 space-y-3 bg-slate-50">
             {chatHistory.length === 0 && (
               <div className="text-center py-10 opacity-60 text-sm text-slate-500">
-                မေးခွန်းများမေးမြန်းနိုင်ပါတယ်။
+                အလုပ်အကိုင်နဲ့ ပတ်သက်ပြီး စဉ်းစားရခက်နေလား? MyanCareer AI နဲ့ အတူ လွယ်ကူစွာ မေးမြန်းနိုင်ပါတယ်။
               </div>
             )}
             {chatHistory.map((msg, i) => (
