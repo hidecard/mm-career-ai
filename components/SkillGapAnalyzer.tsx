@@ -200,10 +200,10 @@ const SkillGapAnalyzer: React.FC<SkillGapAnalyzerProps> = ({ guide, onLearningPa
                       rel="noopener noreferrer"
                       className="flex items-center gap-3 p-3 bg-slate-50 rounded-lg hover:bg-blue-50 transition-colors group"
                     >
-                      <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${resource.type === 'Course' ? 'bg-blue-100 text-blue-600' : resource.type === 'Video' ? 'bg-red-100 text-red-600' : 'bg-purple-100 text-purple-600'}`}>
-                        {resource.type === 'Course' && '📚'} 
-                        {resource.type === 'Video' && '🎬'} 
-                        {resource.type === 'Tutorial' && '📝'}
+                <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${resource.type === 'Course' ? 'bg-blue-100 text-blue-600' : resource.type === 'Video' ? 'bg-red-100 text-red-600' : 'bg-purple-100 text-purple-600'}`}>
+                        {resource.type === 'Course' && <i className="fas fa-book"></i>}
+                        {resource.type === 'Video' && <i className="fas fa-video"></i>}
+                        {resource.type === 'Tutorial' && <i className="fas fa-file-alt"></i>}
                       </div>
                       <div className="flex-1">
                         <div className="font-medium text-slate-900 group-hover:text-blue-600">{resource.title}</div>

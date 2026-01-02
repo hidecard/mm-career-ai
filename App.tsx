@@ -3,10 +3,11 @@ import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import SkillForm from './components/SkillForm';
 import GuideResult from './components/GuideResult';
-import TrendChart from './components/TrendChart';
 import ResumeBuilder from './components/ResumeBuilder';
 import InterviewPrep from './components/InterviewPrep';
 import LearningRoadmap from './pages/LearningRoadmap';
+import Support from './components/Support';
+import MentorAI from './components/MentorAI';
 import { generateCareerGuide } from './services/geminiService';
 import { CareerGuide } from './types';
 
@@ -68,10 +69,6 @@ const App: React.FC = () => {
         {currentPage === 'home' && (
           <div className="space-y-8 md:space-y-12 px-4 sm:px-6 lg:px-8">
             <Hero onStart={handleStartAssessment} />
-
-            <section id="trends" className="animate-fade-in scroll-mt-16">
-              <TrendChart />
-            </section>
           </div>
         )}
 
@@ -85,12 +82,6 @@ const App: React.FC = () => {
           </div>
         )}
 
-        {currentPage === 'trends' && (
-          <div className="animate-fade-in w-full px-4 sm:px-6 lg:px-8">
-            <TrendChart />
-          </div>
-        )}
-
         {currentPage === 'resume-builder' && (
           <div className="animate-fade-in w-full px-4 sm:px-6 lg:px-8">
             {guide ? (
@@ -99,7 +90,7 @@ const App: React.FC = () => {
               <div className="flex items-center justify-center min-h-[400px]">
                 <div className="text-center">
                   <div className="w-16 h-16 mx-auto mb-4 bg-blue-100 rounded-full flex items-center justify-center">
-                    <span className="text-3xl">📄</span>
+                    <i className="fas fa-file-alt text-3xl text-blue-600"></i>
                   </div>
                   <h3 className="text-xl font-bold text-slate-700 mb-2">ပထမဦးစွာ အလုပ်လမ်းညွှန်ချက် ရယူပါ</h3>
                   <p className="text-slate-500">သင့်အတွက် သင့်စာရွက်စာတမ်း ဖန်တီးရန် အရင်းအမြစ်များ လိုအပ်ပါသည်။</p>
@@ -123,7 +114,7 @@ const App: React.FC = () => {
               <div className="flex items-center justify-center min-h-[400px]">
                 <div className="text-center">
                   <div className="w-16 h-16 mx-auto mb-4 bg-blue-100 rounded-full flex items-center justify-center">
-                    <span className="text-3xl">🎤</span>
+                    <i className="fas fa-microphone-alt text-3xl text-blue-600"></i>
                   </div>
                   <h3 className="text-xl font-bold text-slate-700 mb-2">ပထမဦးစွာ အလုပ်လမ်းညွှန်ချက် ရယူပါ</h3>
                   <p className="text-slate-500">အင်တာဗျူး ပြင်ဆင်ရန် အရင်းအမြစ်များ လိုအပ်ပါသည်။</p>
@@ -147,7 +138,7 @@ const App: React.FC = () => {
               <div className="flex items-center justify-center min-h-[400px]">
                 <div className="text-center">
                   <div className="w-16 h-16 mx-auto mb-4 bg-blue-100 rounded-full flex items-center justify-center">
-                    <span className="text-3xl">📚</span>
+                    <i className="fas fa-book-open text-3xl text-blue-600"></i>
                   </div>
                   <h3 className="text-xl font-bold text-slate-700 mb-2">ပထမဦးစွာ အလုပ်လမ်းညွှန်ချက် ရယူပါ</h3>
                   <p className="text-slate-500">Learning Roadmap ကို အသုံးပြုရန် အရင်းအမြစ်များ လိုအပ်ပါသည်။</p>
@@ -162,66 +153,53 @@ const App: React.FC = () => {
             )}
           </div>
         )}
+
+        {currentPage === 'support' && (
+          <div className="animate-fade-in w-full">
+            <Support />
+          </div>
+        )}
       </main>
 
-      <footer className="bg-white border-t border-slate-200 w-full no-print mt-2 md:mt-4 text-slate-900">
-        <div className="w-full px-4 sm:px-6 lg:px-8 py-6 md:py-8">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 mt-4 gap-6 md:gap-8 mb-6 md:mb-8">
-            <div className="lg:col-span-2 space-y-4">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 md:w-12 md:h-12 bg-gradient-to-br from-blue-600 to-blue-700 rounded-xl md:rounded-2xl flex items-center justify-center text-white font-black text-lg md:text-xl shadow-lg shadow-blue-500/30 transform hover:scale-110 transition-transform duration-300">M</div>
-                <div>
-                  <span className="block text-xl md:text-2xl font-black bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600 bg-clip-text text-transparent">MyanCareer AI</span>
-                  <span className="text-xs text-blue-600/70 font-bold tracking-wider">Your Career Compass</span>
-                </div>
-              </div>
+      <MentorAI />
 
-              <p className="text-slate-600 text-sm md:text-base leading-relaxed font-medium max-w-sm">
-                မြန်မာလူငယ်များအတွက် နည်းပညာနှင့် အသက်မွေးဝမ်းကျောင်းဆိုင်ရာ လမ်းပြမြေပုံများကို AI စနစ်သုံး၍ အခမဲ့ ဖန်တီးပေးနေသော Platform ဖြစ်ပါသည်။
+      <footer className="bg-white border-t border-slate-200 w-full no-print mt-4 md:mt-6 text-slate-900">
+        <div className="max-w-7xl mx-auto mt-4 px-4 sm:px-6 lg:px-8 py-6 md:py-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+            {/* Brand Section */}
+            <div className="space-y-3">
+              <div className="flex items-center gap-2">
+                <div className="w-8 h-8 md:w-10 md:h-10 bg-gradient-to-br from-blue-600 to-blue-700 rounded-lg md:rounded-xl flex items-center justify-center text-white font-black text-sm md:text-lg">M</div>
+                <span className="text-lg md:text-xl font-black bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">MyanCareer AI</span>
+              </div>
+              <p className="text-xs md:text-sm text-slate-600 leading-relaxed">
+                မြန်မာလူငယ်များအတွက် AI နည်းပညာဖြင့် အခမဲ့ လမ်းညွှန်ပေးနေသော Platform ဖြစ်ပါသည်။
               </p>
-
-              <div className="flex items-center gap-3 pt-3">
-                <span className="text-xs md:text-sm font-black text-slate-700 uppercase tracking-wider">Follow Us:</span>
-                <div className="flex gap-2">
-                  <a href="#" className="group w-9 h-9 bg-gradient-to-br from-blue-50 to-blue-100 hover:from-blue-100 hover:to-blue-200 rounded-lg flex items-center justify-center transition-all duration-300 border border-blue-200/50 hover:border-blue-300 shadow-md hover:shadow-lg">
-                    <span className="text-sm font-bold text-blue-600 group-hover:text-blue-700">f</span>
-                  </a>
-                  <a href="#" className="group w-9 h-9 bg-gradient-to-br from-indigo-50 to-indigo-100 hover:from-indigo-100 hover:to-indigo-200 rounded-lg flex items-center justify-center transition-all duration-300 border border-indigo-200/50 hover:border-indigo-300 shadow-md hover:shadow-lg">
-                    <span className="text-sm font-bold text-indigo-600 group-hover:text-indigo-700">D</span>
-                  </a>
-                  <a href="#" className="group w-9 h-9 bg-gradient-to-br from-purple-50 to-purple-100 hover:from-purple-100 hover:to-purple-200 rounded-lg flex items-center justify-center transition-all duration-300 border border-purple-200/50 hover:border-purple-300 shadow-md hover:shadow-lg">
-                    <span className="text-sm font-bold text-purple-600 group-hover:text-purple-700">@</span>
-                  </a>
-                </div>
-              </div>
             </div>
 
-            <div className="space-y-4">
-              <div className="space-y-2">
-                <h5 className="font-black text-slate-900 uppercase tracking-widest text-xs md:text-sm border-l-4 border-blue-500 pl-4 py-1">Quick Links</h5>
-                <div className="w-8 h-1 bg-gradient-to-r from-blue-500 to-transparent rounded-full ml-4"></div>
-              </div>
-              <ul className="space-y-3.5 text-sm md:text-base">
+            {/* Quick Links */}
+            <div className="space-y-3">
+              <h5 className="font-bold text-slate-800 text-sm md:text-base">Quick Links</h5>
+              <ul className="space-y-2 text-xs md:text-sm">
                 <li>
-                  <button onClick={() => handleNav('home')} className="group text-slate-600 hover:text-blue-600 transition-all duration-300 flex items-center gap-2.5 font-bold">
-                    <span className="text-blue-500 group-hover:translate-x-1 transition-transform duration-300">→</span>
-                    <span>ပင်မစာမျက်နှာ</span>
+                  <button onClick={() => handleNav('home')} className="text-slate-600 hover:text-blue-600 transition-colors font-medium">
+                    ပင်မစာမျက်နှာ
                   </button>
                 </li>
                 <li>
-                  <button onClick={() => handleNav('assessment')} className="group text-slate-600 hover:text-blue-600 transition-all duration-300 flex items-center gap-2.5 font-bold">
-                    <span className="text-blue-500 group-hover:translate-x-1 transition-transform duration-300">→</span>
-                    <span>လမ်းညွှန်ချက်ရယူရန်</span>
+                  <button onClick={() => handleNav('assessment')} className="text-slate-600 hover:text-blue-600 transition-colors font-medium">
+                    လမ်းညွှန်ချက်ရယူရန်
                   </button>
                 </li>
                 <li>
-                  <button onClick={() => handleNav('trends')} className="group text-slate-600 hover:text-blue-600 transition-all duration-300 flex items-center gap-2.5 font-bold">
-                    <span className="text-blue-500 group-hover:translate-x-1 transition-transform duration-300">→</span>
-                    <span>အလုပ်အကိုင် ရေစီးကြောင်း</span>
+                  <button onClick={() => handleNav('support')} className="text-slate-600 hover:text-blue-600 transition-colors font-medium">
+                    ပံ့ပိုးမှု
                   </button>
                 </li>
               </ul>
             </div>
+
+          
 
             <div className="space-y-4">
               <div className="space-y-2">

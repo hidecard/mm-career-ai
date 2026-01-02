@@ -119,6 +119,16 @@
   .premium-gradient {
     @apply bg-gradient-to-br from-blue-600 via-blue-500 to-indigo-600;
   }
+
+  /* Hide scrollbar but keep functionality */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 /* Smooth transitions for all elements */

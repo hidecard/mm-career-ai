@@ -11,10 +11,10 @@ const Navbar: React.FC<NavbarProps> = ({ onNav, currentPage }) => {
   const navItems = [
     { id: 'home', label: 'ပင်မစာမျက်နှာ' },
     { id: 'assessment', label: 'ဆန်းစစ်ချက်' },
-    { id: 'trends', label: 'အလုပ်အကိုင်ရေစီးကြောင်း' },
     { id: 'resume-builder', label: 'Resume Builder' },
     { id: 'interview-prep', label: 'Interview Prep' },
-    { id: 'learning-roadmap', label: 'Learning Roadmap' }
+    { id: 'learning-roadmap', label: 'Learning Roadmap' },
+    { id: 'support', label: 'ပံ့ပိုးမှု' }
   ];
 
   const handleNavClick = (id: string) => {
@@ -35,20 +35,20 @@ const Navbar: React.FC<NavbarProps> = ({ onNav, currentPage }) => {
             </span>
           </div>
 
-          <div className="hidden md:flex items-center gap-2">
+          <div className="hidden md:flex items-center gap-1">
             {navItems.map((item) => (
               <button
                 key={item.id}
                 onClick={() => handleNavClick(item.id)}
-                className={`text-sm md:text-base font-bold transition-all duration-300 relative py-2 px-4 rounded-xl ${
+                className={`whitespace-nowrap text-xs font-bold transition-all duration-300 relative py-1.5 px-2.5 rounded-lg ${
                   currentPage === item.id
-                  ? 'text-blue-600 bg-blue-50/80 border border-blue-200/50 shadow-md'
+                  ? 'text-blue-600 bg-blue-50/80 border border-blue-200/50 shadow-sm'
                   : 'text-slate-700 hover:text-blue-600 hover:bg-slate-50/60'
                 }`}
               >
                 {item.label}
                 {currentPage === item.id && (
-                  <span className="absolute bottom-0 left-4 right-4 h-0.5 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-t"></span>
+                  <span className="absolute bottom-0 left-2 right-2 h-0.5 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-t"></span>
                 )}
               </button>
             ))}
