@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { CareerGuide, LearningPath, SkillGap, LearningMilestone, LearningResource } from '../types';
+import { generateLearningPath as generateLearningPathAI } from '../services/geminiService';
 
 interface LearningRoadmapProps {
   guide: CareerGuide;
@@ -27,189 +28,24 @@ const LearningRoadmap: React.FC<LearningRoadmapProps> = ({ guide }) => {
     if (e.key === 'Enter') handleAddSkill();
   };
 
-  const generateLearningPath = async () => {
+  const handleGenerateLearningPath = async () => {
     if (currentSkills.length === 0) {
       alert('လက်ရှိ ကျွမ်းကျင်မှုများကို ထည့်သွင်းပေးပါ။');
       return;
     }
     setIsAnalyzing(true);
-    setTimeout(() => {
-      const path = createMockLearningPath(guide, currentSkills);
+    try {
+      const path = await generateLearningPathAI(guide, currentSkills);
       setLearningPath(path);
+    } catch (error) {
+      console.error('Error generating learning path:', error);
+      alert('သင်ယူမှုလမ်းပြမြေပုံ ဖန်တီးရာတွင် အမှားတစ်ခု ဖြစ်ပေါ်ခဲ့ပါသည်။ ထပ်ကြိုးစားကြည့်ပေးပါ။');
+    } finally {
       setIsAnalyzing(false);
-    }, 2000);
+    }
   };
 
-  const createMockLearningPath = (guide: CareerGuide, userSkills: string[]): LearningPath => {
-    const skillGaps = generateSkillGaps(guide.requiredSkills, userSkills);
-    const milestones = generateMilestones(skillGaps);
-    const totalTime = calculateTotalTime(milestones);
-    
-    return {
-      id: `path-${Date.now()}`,
-      jobTitle: guide.jobTitle,
-      currentSkills: userSkills,
-      targetSkills: guide.requiredSkills,
-      skillGaps,
-      milestones,
-      totalEstimatedTime: totalTime,
-      progressPercentage: 0,
-      startedAt: new Date().toISOString()
-    };
-  };
 
-  const getEstimatedTime = (skill: string, priority: string): string => {
-    const baseTime = 2 + Math.floor(Math.random() * 3);
-    const multiplier = priority === 'Essential' ? 2 : priority === 'Recommended' ? 1.5 : 1;
-    return `${Math.ceil(baseTime * multiplier)}-${Math.ceil(baseTime * multiplier * 1.5)} weeks`;
-  };
-
-  const generateSkillGaps = (requiredSkills: string[], userSkills: string[]): SkillGap[] => {
-    const skillLevels = [
-      { level: 'Beginner', skills: ['HTML', 'CSS', 'JavaScript', 'Git', 'Command Line', 'Basic Programming'] },
-      { level: 'Intermediate', skills: ['React', 'Node.js', 'Database', 'API', 'Testing', 'Version Control'] },
-      { level: 'Advanced', skills: ['TypeScript', 'System Design', 'DevOps', 'Security', 'Performance', 'Architecture'] }
-    ];
-
-    const gaps: SkillGap[] = [];
-    skillLevels.forEach((levelData, levelIndex) => {
-      levelData.skills.forEach((skill, skillIndex) => {
-        // More flexible skill matching
-        const hasSkill = userSkills.some(us => {
-          const userSkill = us.toLowerCase().trim();
-          const requiredSkill = skill.toLowerCase().trim();
-          return userSkill.includes(requiredSkill) ||
-                 requiredSkill.includes(userSkill) ||
-                 // Check for common abbreviations
-                 (requiredSkill === 'javascript' && (userSkill.includes('js') || userSkill.includes('java script'))) ||
-                 (requiredSkill === 'html' && userSkill.includes('html')) ||
-                 (requiredSkill === 'css' && userSkill.includes('css')) ||
-                 (requiredSkill === 'react' && userSkill.includes('react')) ||
-                 (requiredSkill === 'node.js' && (userSkill.includes('node') || userSkill.includes('nodejs'))) ||
-                 (requiredSkill === 'typescript' && (userSkill.includes('ts') || userSkill.includes('type script')));
-        });
-
-        // Always include some skills for demonstration, or check if skill is relevant to the job
-        const isRelevantSkill = requiredSkills.length === 0 ||
-                               requiredSkills.some(rs => rs.toLowerCase().includes(skill.toLowerCase().split('.')[0])) ||
-                               ['HTML', 'CSS', 'JavaScript', 'React', 'Node.js', 'Database', 'API'].includes(skill);
-
-        if (!hasSkill && isRelevantSkill) {
-          const priorities: ('Essential' | 'Recommended' | 'Nice-to-have')[] = ['Essential', 'Recommended', 'Nice-to-have'];
-          const priority = priorities[Math.min(levelIndex, 2)];
-
-          // Generate detailed description based on skill level
-          const descriptions = {
-            Beginner: `${skill} ကို အခြေခံမှ စတင်သင်ယူရမည်။ ဤအရာသည် သင့်ရဲ့ အခြေခံအားဖြစ်လာမည်။`,
-            Intermediate: `${skill} ကို အလယ်အလတ်အဆင့်အထိ သင်ယူရမည်။ လက်တွေ့လုပ်ငန်းများတွင် အသုံးပြုနိုင်ရန် လိုအပ်သည်။`,
-            Advanced: `${skill} ကို အဆင့်မြင့်အထိ သင်ယူရမည်။ ကျွမ်းကျင်သူများအတွက် အရေးကြီးသော ကျွမ်းကျင်မှုဖြစ်သည်။`
-          };
-
-          const prerequisites = {
-            Beginner: [],
-            Intermediate: ['HTML', 'CSS', 'JavaScript'],
-            Advanced: ['React', 'Node.js', 'Database']
-          };
-
-          gaps.push({
-            skill,
-            priority,
-            currentLevel: 'None',
-            targetLevel: levelData.level as 'Beginner' | 'Intermediate' | 'Advanced',
-            gapDescription: descriptions[levelData.level as keyof typeof descriptions],
-            prerequisites: prerequisites[levelData.level as keyof typeof prerequisites],
-            resources: generateMockResources(skill),
-            estimatedTimeToLearn: getEstimatedTime(skill, priority),
-            matchScore: Math.floor(70 + Math.random() * 25),
-            level: levelData.level as 'Beginner' | 'Intermediate' | 'Advanced',
-            order: levelIndex * 10 + skillIndex
-          });
-        }
-      });
-    });
-
-    // Sort by level and order
-    return gaps.sort((a, b) => (a.order || 0) - (b.order || 0));
-  };
-
-  const generateMockResources = (skill: string): LearningResource[] => {
-    const platformData = [
-      { name: 'Coursera', baseUrl: 'https://www.coursera.org/courses', searchParam: 'query', type: 'Course' },
-      { name: 'edX', baseUrl: 'https://www.edx.org/learn', searchParam: 'search_query', type: 'Course' },
-      { name: 'Udemy', baseUrl: 'https://www.udemy.com/', searchPath: 'topic', type: 'Course' },
-      { name: 'YouTube', baseUrl: 'https://www.youtube.com/results', searchParam: 'search_query', type: 'Video' },
-      { name: 'FreeCodeCamp', baseUrl: 'https://www.freecodecamp.org/learn', type: 'Tutorial' },
-      { name: 'Khan Academy', baseUrl: 'https://www.khanacademy.org/', type: 'Tutorial' },
-      { name: 'MDN Web Docs', baseUrl: 'https://developer.mozilla.org/', type: 'Documentation' },
-      { name: 'Codecademy', baseUrl: 'https://www.codecademy.com/', type: 'Tutorial' },
-      { name: 'W3Schools', baseUrl: 'https://www.w3schools.com/', type: 'Tutorial' }
-    ];
-
-    const types: LearningResource['type'][] = ['Course', 'Tutorial', 'Video', 'Book', 'Workshop'];
-    return types.slice(0, 3 + Math.floor(Math.random() * 3)).map((type, index) => {
-      const platform = platformData.find(p => p.type === type) || platformData[index % platformData.length];
-
-      // Clean the skill name for URL generation
-      const cleanSkill = skill.toLowerCase()
-        .replace(/[^a-zA-Z0-9\s]/g, '') // Remove special characters
-        .replace(/\s+/g, ' ') // Normalize spaces
-        .trim();
-
-      let url = platform.baseUrl;
-      if (platform.searchParam) {
-        // For platforms that use query parameters
-        const searchQuery = encodeURIComponent(cleanSkill);
-        url = `${platform.baseUrl}?${platform.searchParam}=${searchQuery}`;
-      } else if (platform.searchPath) {
-        // For platforms that use path-based search (like Udemy)
-        const searchSlug = cleanSkill.replace(/\s+/g, '-');
-        url = `${platform.baseUrl}${platform.searchPath}/${searchSlug}/`;
-      }
-      // For platforms without search, just use the base URL
-
-      return {
-        id: `${skill}-${index}`,
-        title: `${skill} ${type} - ${platform.name}`,
-        type,
-        platform: platform.name,
-        description: `${skill} သင်ယူရသော ${type} (${platform.name})`,
-        duration: `${Math.ceil(Math.random() * 10 + 2)} hours`,
-        level: 'Beginner' as const,
-        price: index > 1 ? 'Paid' : 'Free',
-        url,
-        skills: [skill],
-        rating: 4 + Math.random(),
-        matchScore: Math.floor(85 + Math.random() * 15)
-      };
-    });
-  };
-
-  const generateMilestones = (skillGaps: SkillGap[]): LearningMilestone[] => {
-    const milestoneTitles = [
-      'Foundation Building',
-      'Core Skills Development',
-      'Advanced Topics',
-      'Practical Application',
-      'Project Building',
-      'Portfolio Development'
-    ];
-
-    return skillGaps.slice(0, 6).map((gap, index) => ({
-      id: `milestone-${index}`,
-      title: milestoneTitles[index] || `Skill: ${gap.skill}`,
-      description: `${gap.skill} ကို အခြေခံမှ စတင်သင်ယူပြီး လက်တွေ့ကျင်းပန်းတိုင်အထိ သင်ယူရမည်။`,
-      skills: [gap.skill],
-      resources: gap.resources.slice(0, 2),
-      duration: gap.estimatedTimeToLearn,
-      order: index + 1,
-      completed: false
-    }));
-  };
-
-  const calculateTotalTime = (milestones: LearningMilestone[]): string => {
-    const totalWeeks = milestones.length * 3;
-    return `${totalWeeks}-${totalWeeks + 4} weeks`;
-  };
 
   const toggleMilestoneCompletion = (milestoneId: string) => {
     if (!learningPath) return;
@@ -321,7 +157,7 @@ const LearningRoadmap: React.FC<LearningRoadmapProps> = ({ guide }) => {
           )}
 
           <button
-            onClick={generateLearningPath}
+            onClick={handleGenerateLearningPath}
             disabled={isAnalyzing || currentSkills.length === 0}
             className={`w-full py-3 sm:py-4 rounded-xl font-black text-base sm:text-lg transition-all ${
               isAnalyzing || currentSkills.length === 0

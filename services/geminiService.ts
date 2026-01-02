@@ -1,4 +1,4 @@
-import { CareerGuide, Resume, Mentor, Job, LearningResource, InterviewQuestion, InterviewAnswer } from "../types";
+import { CareerGuide, Resume, Mentor, Job, LearningResource, InterviewQuestion, InterviewAnswer, LearningPath } from "../types";
 import { findMatchingMentorsFromDatabase } from "./mentorDatabase";
 
 // Puter.js is loaded via script tag in index.html and provides free, unlimited Gemini API access
@@ -392,6 +392,103 @@ Respond with JSON in the following format:
     })) as LearningResource[];
   } catch (error) {
     throw new Error("သင်ယူရန် အရင်းအမြစ်များ ရှာဖွေရာတွင် အမှားတစ်ခု ဖြစ်ပေါ်ခဲ့ပါသည်။");
+  }
+};
+
+export const generateLearningPath = async (careerGuide: CareerGuide, userSkills: string[]): Promise<LearningPath> => {
+  const prompt = `မြန်မာနိုင်ငံရှိ လူငယ်များအတွက် "${careerGuide.jobTitle}" အလုပ်အတွက် စိတ်ကြိုက် သင်ယူမှုလမ်းပြမြေပုံကို ဖန်တီးပေးပါ။ အသုံးပြုသူ၏ လက်ရှိ ကျွမ်းကျင်မှုများနှင့် လိုအပ်သော ကျွမ်းကျင်မှုများကို နှိုင်းယှဉ်ပြီး သင်ယူရမည့် ကျွမ်းကျင်မှုများကို ဖော်ပြပေးပါ။
+
+Career Guide:
+- Job Title: ${careerGuide.jobTitle}
+- Required Skills: ${careerGuide.requiredSkills.join(', ')}
+- Soft Skills: ${careerGuide.softSkills.join(', ')}
+- Current User Skills: ${userSkills.join(', ')}
+
+မြန်မာဘာသာဖြင့် JSON format ဖြင့်သာ ပြန်ပေးပါ။ သင်ယူမှုလမ်းပြမြေပုံကို အောက်ပါ format ဖြင့် ပေးပါ။
+
+Respond with JSON in the following format:
+{
+  "skillGaps": [
+    {
+      "skill": "ကျွမ်းကျင်မှု အမည်",
+      "priority": "Essential",
+      "currentLevel": "None",
+      "targetLevel": "Beginner",
+      "gapDescription": "ဤကျွမ်းကျင်မှုကို သင်ယူရမည့် အကြောင်းရင်း",
+      "prerequisites": ["လိုအပ်သော အခြေခံဗဟုသုတ"],
+      "estimatedTimeToLearn": "၃-၆ လ",
+      "level": "Beginner",
+      "order": 1
+    }
+  ],
+  "milestones": [
+    {
+      "title": "အဆင့် ၁ - အခြေခံမြေပြင်ပြင်",
+      "description": "အဆင့်အသေးစိတ် ဖော်ပြချက်",
+      "skills": ["ကျွမ်းကျင်မှု ၁", "ကျွမ်းကျင်မှု ၂"],
+      "duration": "၂-၃ လ",
+      "order": 1
+    }
+  ],
+  "totalEstimatedTime": "၆-၁၂ လ"
+}`;
+
+  const responsePromise = puter.ai.chat(prompt, {
+    model: 'gemini-3-flash-preview',
+    stream: true
+  });
+
+  const text = await streamAIResponse(responsePromise);
+
+  try {
+    const data = parseAIResponse(text);
+
+    // Generate resources for each skill gap
+    const skillGapsWithResources = await Promise.all(
+      data.skillGaps.map(async (gap: any) => {
+        const resources = await findLearningResources(careerGuide, [gap.skill]);
+        return {
+          ...gap,
+          resources: resources.slice(0, 3), // Limit to 3 resources per skill
+          matchScore: Math.floor(Math.random() * 40) + 60
+        };
+      })
+    );
+
+    // Generate resources for milestones
+    const milestonesWithResources = data.milestones.map((milestone: any, index: number) => {
+      const relevantResources = skillGapsWithResources
+        .filter(gap => milestone.skills.includes(gap.skill))
+        .flatMap(gap => gap.resources)
+        .slice(0, 2); // 2 resources per milestone
+
+      return {
+        id: `milestone-${index + 1}`,
+        title: milestone.title,
+        description: milestone.description,
+        skills: milestone.skills,
+        resources: relevantResources,
+        duration: milestone.duration,
+        order: milestone.order,
+        completed: false
+      };
+    });
+
+    const learningPath: LearningPath = {
+      id: `path-${Date.now()}`,
+      jobTitle: careerGuide.jobTitle,
+      currentSkills: userSkills,
+      targetSkills: careerGuide.requiredSkills,
+      skillGaps: skillGapsWithResources,
+      milestones: milestonesWithResources,
+      totalEstimatedTime: data.totalEstimatedTime,
+      progressPercentage: 0,
+      startedAt: new Date().toISOString()
+    };
+
+    return learningPath;
+  } catch (error) {
+    throw new Error("သင်ယူမှုလမ်းပြမြေပုံ ဖန်တီးရာတွင် အမှားတစ်ခု ဖြစ်ပေါ်ခဲ့ပါသည်။");
   }
 };
 
